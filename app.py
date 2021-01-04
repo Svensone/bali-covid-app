@@ -24,7 +24,7 @@ import controls
 
 # get relative data folder
 PATH = pathlib.Path(__file__).parent
-DATA_PATH = PATH.joinpath("data").resolve()
+DATA_PATH = PATH.joinpath("datasets").resolve()
 
 # ------------------------------------------------------------------------------
 # 1. Data
