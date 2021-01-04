@@ -25,8 +25,8 @@ jupyter-client==6.1.7
 jupyter-core==4.7.0
 MarkupSafe 
 mkl-fft
-mkl-random==1.1.1
-mkl-service==2.3.0
+mkl-random
+mkl-service
 numpy 
 pandas
 parso==0.7.1
