@@ -18,7 +18,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 
 # Multi-dropdown options
-from controls import REGENCIES, COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
+from controls import REGENCIES
 import controls
 
 
@@ -26,15 +26,17 @@ import controls
 PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("data").resolve()
 
-# Data paths
-# -----------------------------
+# ------------------------------------------------------------------------------
+# 1. Data
+# ------------------------------------------------------------------------------
+    df_bali = pd.read_excel(DATA_PATH.joinpath('regencyCasesBali.xlsx'))
 
-data_covid_bali = r'C:\Users\ansve\Coding\Projects-WebScraping\CovidBali\testingDash\plotly apps-dash-oil-and-gas\data\data_process\bali_regency_data.csv'
-data_covid_indo = r'C:\Users\ansve\Coding\Projects-WebScraping\CovidBali\testingDash\plotly apps-dash-oil-and-gas\data\data_process\indo_province_data.csv'
-data_covid_germany = r'C:\Users\ansve\Coding\Projects-WebScraping\CovidBali\testingDash\plotly apps-dash-oil-and-gas\data\county_covid_BW.csv'
-geojson_bali = r'C:\Users\ansve\Coding\Projects-WebScraping\CovidBali\testingDash\plotly apps-dash-oil-and-gas\data\new_bali_geojson_id.geojson'
-geojson_indo = r'C:\Users\ansve\Coding\Projects-WebScraping\CovidBali\testingDash\plotly apps-dash-oil-and-gas\data\indo_level1_id.geojson'
-geojson_germany = r'C:\Users\ansve\Coding\Projects-WebScraping\CovidBali\testingDash\plotly apps-dash-oil-and-gas\data\geojson_ger.json'
+data_covid_bali = "https://raw.githubusercontent.com/Svensone/bali-covid-app/main/data/bali_regency_data.csv"
+data_covid_indo = 'https://raw.githubusercontent.com/Svensone/bali-covid-app/main/data/indo_province_data.csv'
+data_covid_germany = DATA_PATH.joinpath('county_covid_BW.csv')
+geojson_bali = DATA_PATH.joinpath('new_bali_geojson_id.geojson')
+geojson_indo = DATA_PATH.joinpath('indonesia_edit.geojson')
+geojson_germany = DATA_PATH.joinpath('geojson_ger.json')
 
 
 # Initialize App
