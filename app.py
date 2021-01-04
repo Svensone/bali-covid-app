@@ -24,14 +24,14 @@ import controls
 
 # get relative data folder
 PATH = pathlib.Path(__file__).parent
-DATA_PATH = PATH.joinpath("datasets").resolve()
+DATA_PATH = PATH.joinpath("data").resolve()
 
 # ------------------------------------------------------------------------------
 # 1. Data
 # ------------------------------------------------------------------------------
 
-data_covid_bali = "https://raw.githubusercontent.com/Svensone/bali-covid-app/main/data/bali_regency_data.csv"
-data_covid_indo = 'https://raw.githubusercontent.com/Svensone/bali-covid-app/main/data/indo_province_data.csv'
+data_covid_bali = DATA_PATH.joinpath('bali_regency_data.csv')
+data_covid_indo = DATA_PATH.joinpath('indo_province_data.csv')
 data_covid_germany = DATA_PATH.joinpath('county_covid_BW.csv')
 geojson_bali = DATA_PATH.joinpath('new_bali_geojson_id.geojson')
 geojson_indo = DATA_PATH.joinpath('indonesia_edit.geojson')
@@ -337,8 +337,6 @@ def update_cases_mortality(regency, region):
     return '{}'.format(cfr), '{}'.format(str(round(cp100k, 2))), '{}'.format(str(round(dp100k, 2))), 'not yet'
 
 # Selectors -> main graph
-
-
 @app.callback(
     Output("main_graph", "figure"),
     [Input("year_slider", "value"), Input('region_selector', 'value')],
