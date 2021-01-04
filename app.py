@@ -29,7 +29,6 @@ DATA_PATH = PATH.joinpath("data").resolve()
 # ------------------------------------------------------------------------------
 # 1. Data
 # ------------------------------------------------------------------------------
-    df_bali = pd.read_excel(DATA_PATH.joinpath('regencyCasesBali.xlsx'))
 
 data_covid_bali = "https://raw.githubusercontent.com/Svensone/bali-covid-app/main/data/bali_regency_data.csv"
 data_covid_indo = 'https://raw.githubusercontent.com/Svensone/bali-covid-app/main/data/indo_province_data.csv'
