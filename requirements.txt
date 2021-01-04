@@ -1,19 +1,19 @@
-# autopep8 @ file:///tmp/build/80754af9/autopep8_1596578164842/work
+autopep8 
 backcall==0.2.0
-Brotli @ file:///D:/bld/brotli-split_1603546384271/work
+Brotli 
 certifi==2020.12.5
 click==7.1.2
 colorama==0.4.4
-dash @ file:///home/conda/feedstock_root/build_artifacts/dash_1604061089786/work
-dash-bootstrap-components @ file:///home/conda/feedstock_root/build_artifacts/dash-bootstrap-components_1601845474246/work
-dash-core-components @ file:///home/conda/feedstock_root/build_artifacts/dash-core-components_1604054628327/work
-dash-html-components @ file:///home/conda/feedstock_root/build_artifacts/dash-html-components_1599715712112/work
-dash-renderer @ file:///home/conda/feedstock_root/build_artifacts/dash-renderer_1604054245287/work
-dash-table @ file:///home/conda/feedstock_root/build_artifacts/dash-table_1604056396782/work
+dash 
+dash-bootstrap-components 
+dash-core-components 
+dash-html-components 
+dash-renderer
+dash-table 
 decorator==4.4.2
 Flask==1.1.2
-Flask-Compress @ file:///home/conda/feedstock_root/build_artifacts/flask-compress_1604422164145/work
-future @ file:///D:/bld/future_1605203612778/work
+Flask-Compress 
+future 
 gunicorn==20.0.4
 ipykernel==5.4.2
 ipython==7.16.1
@@ -23,26 +23,26 @@ jedi==0.17.2
 Jinja2==2.11.2
 jupyter-client==6.1.7
 jupyter-core==4.7.0
-MarkupSafe @ file:///D:/bld/markupsafe_1602267688190/work
+MarkupSafe 
 mkl-fft==1.2.0
 mkl-random==1.1.1
 mkl-service==2.3.0
-numpy @ file:///C:/ci/numpy_and_numpy_base_1603480701039/work
-pandas @ file:///C:/ci/pandas_1602088210462/work
+numpy 
+pandas
 parso==0.7.1
 pathlib==1.0.1
 pickleshare==0.7.5
-plotly @ file:///home/conda/feedstock_root/build_artifacts/plotly_1607354896326/work
+plotly
 prompt-toolkit==3.0.8
 pycodestyle==2.6.0
 Pygments==2.7.3
 python-dateutil==2.8.1
-pytz @ file:///tmp/build/80754af9/pytz_1606604771399/work
+pytz
 pywin32==300
 PyYAML==5.3.1
 pyzmq==20.0.0
 retrying==1.3.3
-six @ file:///C:/ci/six_1605187303045/work
+six 
 toml==0.10.2
 tornado==6.1
 traitlets==4.3.3
