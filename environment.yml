@@ -3,7 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - autopep8=1.5.4=py_0
+  # - autopep8=1.5.4=py_0
   - blas=1.0=mkl
   - brotli-python=1.0.9=py36h33355b6_3
   - certifi=2020.12.5=py36haa95532_0
