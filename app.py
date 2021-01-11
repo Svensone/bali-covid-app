@@ -127,6 +127,7 @@ app.layout = html.Div(
             className="row flex-display",
             style={"margin-bottom": "10px"},
         ),
+        # horizontal control bar (no logic yet)
         html.Div([
             html.Div([
                 html.P("Region:", className='control_label'),
@@ -364,7 +365,7 @@ def make_main_figure(year_value, region, main_graph_layout):
         df = pd.read_csv(data_covid_germany)
         geojson = json.load(open(geojson_germany))
         center = {"lat": 48.5002, "lon": 9.0129}
-        zoom = 6
+        zoom = 7
 
     fig = px.choropleth_mapbox(
         df,
@@ -373,7 +374,7 @@ def make_main_figure(year_value, region, main_graph_layout):
         color='total_cases_per_100k',
         mapbox_style='carto-positron',
         hover_name='Name_EN',
-        hover_data=['cases7_per_100k', 'deaths7_per_100k'],
+        hover_data=['cases7_per_100k'],# 'deaths7_per_100k'
         animation_frame="Date",
         color_continuous_scale='blues',
         zoom=zoom,
