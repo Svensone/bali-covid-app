@@ -34,7 +34,7 @@ data_covid_bali = DATA_PATH.joinpath('bali_regency_data.csv')
 data_covid_indo = DATA_PATH.joinpath('indo_province_data.csv')
 data_covid_germany = DATA_PATH.joinpath('county_covid_BW.csv')
 geojson_bali = DATA_PATH.joinpath('new_bali_geojson_id.geojson')
-geojson_indo = DATA_PATH.joinpath('indonesia_edit.geojson')
+geojson_indo = DATA_PATH.joinpath('indonesia-edit.geojson')
 geojson_germany = DATA_PATH.joinpath('geojson_ger.json')
 
 
@@ -127,12 +127,12 @@ app.layout = html.Div(
             className="row flex-display",
             style={"margin-bottom": "10px"},
         ),
-        # horizontal control bar (no logic yet)
+        # horizontal control bar
         html.Div([
             html.Div([
                 html.P("Region:", className='control_label'),
                 dcc.RadioItems(
-                    id='region_sel',
+                    id='region_selector',
                     options=[
                         {'label': 'Indonesia', 'value': 'indo'},
                         {'label': 'Bali', 'value': 'bali'},
@@ -144,7 +144,7 @@ app.layout = html.Div(
                 html.P("Regency/County:",
                        className="control_label"),
                 dcc.Dropdown(
-                    id="regency_sel",
+                    id="regency_selector",
                     options=regency_options,  # well_type_options,
                     multi=False,
                     value='',
@@ -161,62 +161,62 @@ app.layout = html.Div(
 
         html.Div(
             [
-                # Controls Panel Component
-                # ------------------------------
-                html.Div(
-                    [
-                        html.P(
-                            "Region:",
-                            className='control_label'
-                        ),
-                        dcc.RadioItems(
-                            id='region_selector',
-                            options=[
-                                {'label': 'Indonesia', 'value': 'indo'},
-                                {'label': 'Bali', 'value': 'bali'},
-                            ],
-                            labelStyle={"display": "inline-block"},
-                            value="bali",
-                            className="dcc_control",
-                        ),
-                        html.P("Regency/County:",
-                               className="control_label"),
-                        dcc.Dropdown(
-                            id="regency_selector",
-                            options=regency_options,  # well_type_options,
-                            multi=False,
-                            value='',
-                            className="dcc_control",
-                        ),
-                        html.P('NOT YET !!', className="control_label",),
-                        html.P("Date or Timerange:",
-                               className="control_label",
-                               ),
-                        dcc.RangeSlider(
-                            id="year_slider",
-                            min=1960,
-                            max=2017,
-                            value=[1990, 2010],
-                            className="dcc_control",
-                        ),
-                        html.P("Cases:", className="control_label"),
-                        dcc.RadioItems(
-                            id="well_status_selector",
-                            options=[
-                                {"label": "All ", "value": "all"},
-                                {"label": "Confirmed ", "value": "confirmed"},
-                                {"label": "Deaths ", "value": "death"},
-                                {"label": "Recovered ", "value": "Recovered"},
-                                {"label": "Active ", "value": "active"},
-                            ],
-                            value="confirmed",
-                            labelStyle={"display": "inline-block"},
-                            className="dcc_control",
-                        ),
-                    ],
-                    className="pretty_container three columns",
-                    id="cross-filter-options",
-                ),
+                # # Controls Panel Component
+                # # ------------------------------
+                # html.Div(
+                #     [
+                #         html.P(
+                #             "Region:",
+                #             className='control_label'
+                #         ),
+                #         dcc.RadioItems(
+                #             id='region_selector',
+                #             options=[
+                #                 {'label': 'Indonesia', 'value': 'indo'},
+                #                 {'label': 'Bali', 'value': 'bali'},
+                #             ],
+                #             labelStyle={"display": "inline-block"},
+                #             value="bali",
+                #             className="dcc_control",
+                #         ),
+                #         html.P("Regency/County:",
+                #                className="control_label"),
+                #         dcc.Dropdown(
+                #             id="regency_selector",
+                #             options=regency_options,  # well_type_options,
+                #             multi=False,
+                #             value='',
+                #             className="dcc_control",
+                #         ),
+                #         html.P('NOT YET !!', className="control_label",),
+                #         html.P("Date or Timerange:",
+                #                className="control_label",
+                #                ),
+                #         dcc.RangeSlider(
+                #             id="year_slider",
+                #             min=1960,
+                #             max=2017,
+                #             value=[1990, 2010],
+                #             className="dcc_control",
+                #         ),
+                #         html.P("Cases:", className="control_label"),
+                #         dcc.RadioItems(
+                #             id="well_status_selector",
+                #             options=[
+                #                 {"label": "All ", "value": "all"},
+                #                 {"label": "Confirmed ", "value": "confirmed"},
+                #                 {"label": "Deaths ", "value": "death"},
+                #                 {"label": "Recovered ", "value": "Recovered"},
+                #                 {"label": "Active ", "value": "active"},
+                #             ],
+                #             value="confirmed",
+                #             labelStyle={"display": "inline-block"},
+                #             className="dcc_control",
+                #         ),
+                #     ],
+                #     className="pretty_container three columns",
+                #     id="cross-filter-options",
+                # ),
 
                 # Data & Graphs Components
                 # ------------------------------
@@ -305,15 +305,13 @@ app.clientside_callback(
     [Input("count_graph", "figure")],
 )
 
-# Slectore -> Mini-Container Numbers
-
+# Selector -> Mini-Container Numbers
 
 @app.callback(
     [Output("cases_mortality", "children"),
      Output('cases_per_100k', 'children'),
      Output('deaths_per_100k', 'children'),
      Output('growth_rate', 'children')],
-
     [Input('regency_selector', 'value'),
      Input('region_selector', 'value')],
 )
@@ -340,10 +338,10 @@ def update_cases_mortality(regency, region):
 # Selectors -> main graph
 @app.callback(
     Output("main_graph", "figure"),
-    [Input("year_slider", "value"), Input('region_selector', 'value')],
+    Input('region_selector', 'value'),
     [State("main_graph", "relayoutData")],
 )
-def make_main_figure(year_value, region, main_graph_layout):
+def make_main_figure(region, main_graph_layout):
     # print(region)
     # print(year_value)
     # print(main_graph_layout)
@@ -374,7 +372,7 @@ def make_main_figure(year_value, region, main_graph_layout):
         color='total_cases_per_100k',
         mapbox_style='carto-positron',
         hover_name='Name_EN',
-        hover_data=['cases7_per_100k'],# 'deaths7_per_100k'
+        hover_data=[],# 'deaths7_per_100k'
         animation_frame="Date",
         color_continuous_scale='blues',
         zoom=zoom,
@@ -404,9 +402,9 @@ def make_main_figure(year_value, region, main_graph_layout):
 @app.callback(
     Output("count_graph", "figure"),
     [Input('region_selector', 'value'), Input(
-        'regency_selector', 'value'), Input("year_slider", "value")],
+        'regency_selector', 'value')],
 )
-def make_count_figure(region, regency, year_slider):
+def make_count_figure(region, regency):
 
     if region == 'indo':
         df = pd.read_csv(data_covid_indo)
