@@ -149,9 +149,7 @@ app.layout = html.Div(
                         labelStyle={"display": "inline-block"},
                         value="bali",
                         className="dcc_control",),
-                ],
-                ),
-
+                ],),
                 html.Div([
                     html.P("Regency/County:",
                            className="control_label"),
@@ -167,14 +165,11 @@ app.layout = html.Div(
             ],
                 className='pretty_container thirteen columns',
                 style = {'display': 'inline-block'},
-
             )
         ],
             id='new_controls',
             className="row flex-display",
         ),
-
-
         html.Div(
             [
                 # # Controls Panel Component
@@ -294,6 +289,32 @@ app.layout = html.Div(
             ],
             className="row flex-display",
         ),
+
+
+        html.Div([
+            html.Div([
+                html.Div([
+                    html.P("Cases:", className='control_label'),
+                    dcc.RadioItems(
+                        id='case_type_selector',
+                        options=[
+                            {'label': 'Confirmed', 'value': 'total_cases_per_100k'},
+                            {'label': 'Recovered', 'value': 'total_recovered'},
+                            {'label': 'Deaths', 'value': 'total_deaths_per_100k'},
+                        ],
+                        labelStyle={"display": "inline-block"},
+                        value="total_cases_per_100k",
+                        className="dcc_control",),
+                ],),
+            ],
+                className='pretty_container thirteen columns',
+                style = {'display': 'inline-block'},
+            )
+        ],
+            id='',
+            className="row flex-display",
+        ),
+
         html.Div(
             [
                 html.Div(
@@ -376,17 +397,16 @@ def update_cases_mortality(regency, region):
     return '{}'.format(cfr), '{}'.format(str(round(cp100k, 2))), '{}'.format(str(round(dp100k, 2))), 'not yet'
 
 # Selectors -> main graph
-
-
 @app.callback(
     Output("main_graph", "figure"),
-    Input('region_selector', 'value'),
+    [Input('region_selector', 'value'), 
+    Input('case_type_selector', 'value')],
     [State("main_graph", "relayoutData")],
 )
-def make_main_figure(region, main_graph_layout):
-    # print(region)
-    # print(year_value)
-    # print(main_graph_layout)
+def make_main_figure(region, case_type, main_graph_layout, ):
+    print(region)
+    print(case_type)
+    print(main_graph_layout)
     PATH = pathlib.Path(__file__).parent
 
     if region == 'bali':
@@ -411,10 +431,10 @@ def make_main_figure(region, main_graph_layout):
         df,
         geojson=geojson,
         locations='id',
-        color='total_cases_per_100k',
+        color= case_type, 
         mapbox_style='carto-positron',
         hover_name='Name_EN',
-        hover_data=[],  # 'deaths7_per_100k'
+        hover_data=['CFR'],
         animation_frame="Date",
         color_continuous_scale='blues',
         zoom=zoom,
@@ -468,8 +488,7 @@ def make_count_figure(region, regency):
     # fig = go.Figure()
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
-    selected_cases = ['new_cases', 'new_recovered', 'cases7'
-                      ]
+    selected_cases = ['new_cases', 'new_recovered', 'cases7']
     colors = px.colors.sequential.Blues
     count = 0
     for selected in selected_cases:
