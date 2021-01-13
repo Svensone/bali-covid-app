@@ -33,8 +33,8 @@ DATA_PATH = PATH.joinpath("data").resolve()
 data_covid_bali = DATA_PATH.joinpath('bali_regency_data.csv')
 data_covid_indo = DATA_PATH.joinpath('indo_province_data.csv')
 data_covid_germany = DATA_PATH.joinpath('county_covid_BW.csv')
-geojson_bali = DATA_PATH.joinpath('new_bali_geojson_id.geojson')
-geojson_indo = DATA_PATH.joinpath('indonesia-edit.geojson')
+geojson_bali = DATA_PATH.joinpath('new_bali_id.geojson')
+geojson_indo = DATA_PATH.joinpath('new_indo_id.geojson')
 geojson_germany = DATA_PATH.joinpath('geojson_ger.json')
 
 
@@ -102,9 +102,9 @@ app.layout = html.Div(
                     [
                         html.Div(
                             [
-                                html.H3("Covid Cases", style={
+                                html.H3("Bali", style={
                                         "margin-bottom": "0px"},),
-                                html.H5("Cases in Bali per Regency",
+                                html.H6("Data per Regency",
                                         style={"margin-top": "0px"}),
                             ]
                         )
@@ -114,10 +114,18 @@ app.layout = html.Div(
                 ),
                 html.Div(
                     [
+                        
                         html.A(
                             html.Button("About Me", id="learn-more-button"),
                             href="https://5cac0a0b7a48d9000a0e3c77--portfolio-gatsby-bali.netlify.app/",
-                        )
+                        ),
+                        html.Img(
+                            src=app.get_asset_url("frangi.png"),
+                            id="header-image",
+                            style={
+                                "height": "90px",
+                                "width": "auto", },
+                        ),
                     ],
                     className="one-third column",
                     id="button",
@@ -130,28 +138,36 @@ app.layout = html.Div(
         # horizontal control bar
         html.Div([
             html.Div([
-                html.P("Region:", className='control_label'),
-                dcc.RadioItems(
-                    id='region_selector',
-                    options=[
-                        {'label': 'Indonesia', 'value': 'indo'},
-                        {'label': 'Bali', 'value': 'bali'},
-                    ],
-                    labelStyle={"display": "inline-block"},
-                    value="bali",
-                    className="dcc_control",
+                html.Div([
+                    html.P("Region:", className='control_label'),
+                    dcc.RadioItems(
+                        id='region_selector',
+                        options=[
+                            {'label': 'Indonesia', 'value': 'indo'},
+                            {'label': 'Bali', 'value': 'bali'},
+                        ],
+                        labelStyle={"display": "inline-block"},
+                        value="bali",
+                        className="dcc_control",),
+                ],
                 ),
-                html.P("Regency/County:",
-                       className="control_label"),
-                dcc.Dropdown(
-                    id="regency_selector",
-                    options=regency_options,  # well_type_options,
-                    multi=False,
-                    value='',
-                    className="dcc_control",
-                ),
+
+                html.Div([
+                    html.P("Regency/County:",
+                           className="control_label"),
+                    dcc.Dropdown(
+                        id="regency_selector",
+                        options=regency_options,
+                        multi=False,
+                        value='',
+                        className="dcc_control",
+                    ), ],
+                    style={'display': 'inline-block'},
+                    id='regency_selector_div')
             ],
-                className='pretty_container thirteen columns'
+                className='pretty_container thirteen columns',
+                style = {'display': 'inline-block'},
+
             )
         ],
             id='new_controls',
@@ -225,26 +241,39 @@ app.layout = html.Div(
                         html.Div(
                             [
                                 html.Div(
-                                    [html.H6(id="cases_mortality", style={'text-align': 'center'}), html.P("Case Fatality Rate"),
+                                    [
+                                    html.P("Case Fatality Rate", 
+                                    style={'text-align': 'center'}),
+                                    html.H6(
+                                        id="cases_mortality", 
+                                        style={'text-align': 'center'}), 
+                                    
                                      ],
                                     id="wells",
                                     className="mini_container",
                                 ),
                                 html.Div(
-                                    [html.H6(id="cases_per_100k"),
-                                     html.P("Cases per 100k")],
+                                    [
+                                    html.P("Cases per 100k", style={'text-align': 'center'}),
+                                    html.H6(id="cases_per_100k", style={'text-align': 'center'})
+                                    ],
+                                     
                                     id="gas",
                                     className="mini_container",
                                 ),
                                 html.Div(
-                                    [html.H6(id="deaths_per_100k"),
-                                     html.P("Deaths per 100k")],
+                                    [
+                                    html.P("Deaths per 100k", style={'text-align': 'center'}),
+                                    html.H6(id="deaths_per_100k", style={'text-align': 'center'}),
+                                     ],
                                     id="oil",
                                     className="mini_container",
                                 ),
                                 html.Div(
-                                    [html.H6(id="growth_rate"),
-                                     html.P("Growth-rate")],
+                                    [
+                                        html.P("Growth-rate", style={'text-align': 'center'}),
+                                        html.H6(id="growth_rate", style={'text-align': 'center'}),
+                                     ],
                                     id="water",
                                     className="mini_container",
                                 ),
@@ -305,8 +334,19 @@ app.clientside_callback(
     [Input("count_graph", "figure")],
 )
 
-# Selector -> Mini-Container Numbers
+# Region Selector -> show Regency Option
+@app.callback(
+    Output(component_id='regency_selector_div', component_property='style'),
+    Input('region_selector', 'value')
+)
+def show_regency_selector(region):
+    if region == 'bali':
+        return {'display': 'inline-block'}
+    if region == 'indo':
+        return {'display': 'none'}
 
+
+# Selector -> Mini-Container Numbers
 @app.callback(
     [Output("cases_mortality", "children"),
      Output('cases_per_100k', 'children'),
@@ -336,6 +376,8 @@ def update_cases_mortality(regency, region):
     return '{}'.format(cfr), '{}'.format(str(round(cp100k, 2))), '{}'.format(str(round(dp100k, 2))), 'not yet'
 
 # Selectors -> main graph
+
+
 @app.callback(
     Output("main_graph", "figure"),
     Input('region_selector', 'value'),
@@ -372,7 +414,7 @@ def make_main_figure(region, main_graph_layout):
         color='total_cases_per_100k',
         mapbox_style='carto-positron',
         hover_name='Name_EN',
-        hover_data=[],# 'deaths7_per_100k'
+        hover_data=[],  # 'deaths7_per_100k'
         animation_frame="Date",
         color_continuous_scale='blues',
         zoom=zoom,
