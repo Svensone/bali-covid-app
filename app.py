@@ -114,11 +114,6 @@ app.layout = html.Div(
                 ),
                 html.Div(
                     [
-
-                        html.A(
-                            html.Button("About Me", id="learn-more-button"),
-                            href="https://5cac0a0b7a48d9000a0e3c77--portfolio-gatsby-bali.netlify.app/",
-                        ),
                         html.Img(
                             src=app.get_asset_url("frangi.png"),
                             id="header-image",
@@ -127,8 +122,8 @@ app.layout = html.Div(
                                 "width": "auto", },
                         ),
                     ],
-                    className="one-third column",
-                    id="button",
+                    className="one column",
+                    id="header-image2",
                 ),
             ],
             id="header",
@@ -171,106 +166,102 @@ app.layout = html.Div(
             id='new_controls',
             className="row flex-display",
         ),
+        # # Controls Panel Component
+        # # ------------------------------
+
+        #         html.P('NOT YET !!', className="control_label",),
+        #         html.P("Date or Timerange:",
+        #                className="control_label",
+        #                ),
+        #         dcc.RangeSlider(
+        #             id="year_slider",
+        #             min=1960,
+        #             max=2017,
+        #             value=[1990, 2010],
+        #             className="dcc_control",
+        #         ),
+
+        # Mini Container Row
+        # -----------------------
         html.Div(
             [
-                # # Controls Panel Component
-                # # ------------------------------
-
-                #         html.P('NOT YET !!', className="control_label",),
-                #         html.P("Date or Timerange:",
-                #                className="control_label",
-                #                ),
-                #         dcc.RangeSlider(
-                #             id="year_slider",
-                #             min=1960,
-                #             max=2017,
-                #             value=[1990, 2010],
-                #             className="dcc_control",
-                #         ),
-
-                # Data & Graphs Components
-                # ------------------------------
                 html.Div(
                     [
-                        ## Mini Container Row
-                        ##-----------------------
-                        html.Div(
-                            [
-                                html.Div(
-                                    [
-                                        html.P("Case Fatality Rate",
-                                               style={'text-align': 'center'}),
-                                        html.H6(
-                                            id="cases_mortality",
-                                            style={'text-align': 'center'}),
-
-                                    ],
-                                    id="wells",
-                                    className="mini_container",
-                                ),
-                                html.Div(
-                                    [
-                                        html.P("Cases per 100k", style={
-                                               'text-align': 'center'}),
-                                        html.H6(id="cases_per_100k", style={
-                                                'text-align': 'center'})
-                                    ],
-
-                                    id="gas",
-                                    className="mini_container",
-                                ),
-                                html.Div(
-                                    [
-                                        html.P("Deaths per 100k", style={
-                                               'text-align': 'center'}),
-                                        html.H6(id="deaths_per_100k", style={
-                                                'text-align': 'center'}),
-                                    ],
-                                    id="oil",
-                                    className="mini_container",
-                                ),
-                                html.Div(
-                                    [
-                                        html.P("Growth-rate",
-                                               style={'text-align': 'center'}),
-                                        html.H6(id="growth_rate", style={
-                                                'text-align': 'center'}),
-                                    ],
-                                    id="water",
-                                    className="mini_container",
-                                ),
-                            ],
-                            id="info-container",
-                            className="row container-display thirteen columns",
-                        ),
-                        ## Graph Component
-                        ##--------------------
-                        html.Div([
-                            html.Div(
-                                [dcc.Graph(id="count_graph")],
-                                id="countGraphContainer",
-                                style={"minHeight": "70vh"},
-                                className="pretty_container nine columns",
-                            ),
-                            html.Div(
-                                [dcc.Graph(id="")],
-                                id="",
-                                style={"minHeight": "70vh"},
-                                className="pretty_container four columns",
-                            ),
-                        ],
-                            id="graph-container",
-                            className="row container-display",)
+                        html.P("Case Fatality Rate",
+                               style={'text-align': 'center'}),
+                        html.H6(
+                            id="cases_mortality",
+                            style={'text-align': 'center'}),
 
                     ],
-                    id="right-column",
-                    className="thirteen columns",
+                    id="wells",
+                    className="mini_container",
+                ),
+                html.Div(
+                    [
+                        html.P("Cases per 100k", style={
+                            'text-align': 'center'}),
+                        html.H6(id="cases_per_100k", style={
+                            'text-align': 'center'})
+                    ],
+
+                    id="gas",
+                    className="mini_container",
+                ),
+                html.Div(
+                    [
+                        html.P("Deaths per 100k", style={
+                            'text-align': 'center'}),
+                        html.H6(id="deaths_per_100k", style={
+                            'text-align': 'center'}),
+                    ],
+                    id="oil",
+                    className="mini_container",
+                ),
+                html.Div(
+                    [
+                        html.P("Growth-Rate",
+                               style={'text-align': 'center'}),
+                        html.H6(id="growth_rate", style={
+                            'text-align': 'center'}),
+                    ],
+                    id="water",
+                    className="mini_container",
                 ),
             ],
-            className="row flex-display thirteen columns",
+            id="info-container",
+            className="row container-display thirteen columns",
         ),
 
+        # Graph Component
+        # --------------------
+        html.Div([
+            html.Div(
+                [dcc.Graph(id="count_graph")],
+                id="countGraphContainer",
+                style={"minHeight": "70vh"},
+                className="pretty_container nine columns",
+            ),
+            html.Div(
+                [
+                    html.Div(
+                        html.Img(
+                            src=app.get_asset_url('pic1.jpg'),
+                            style={
+                                'max-width': '100%',
+                                'max-height': '100%',
+                                #    'background-size': 'cover',
+                            }))
+                ],
+                className="pretty_container four columns",
+            ),
 
+        ],
+            id="graph-container",
+            className="row container-display",),
+
+        # Control Bar 2
+        # --------------------
         html.Div([
             html.Div([
                 html.Div([
@@ -295,6 +286,8 @@ app.layout = html.Div(
             className="row flex-display",
         ),
 
+        # Choropleth Map
+        # --------------------
         html.Div(
             [
                 html.Div(
@@ -304,24 +297,63 @@ app.layout = html.Div(
                                'max-height': '100%'
                                },
                     )],
-                    className="pretty_container seven columns",
+                    className="pretty_container eight columns",
                 ),
                 html.Div(
-                    [
-                        # dcc.Graph(id="individual_graph")
-                        html.Div(
-                            html.Img(
-                                src=app.get_asset_url('pic1.jpg'),
-                                style={
-                                    'max-width': '100%',
-                                    'max-height': '100%',
-                                    #    'background-size': 'cover',
-                                }))
-                    ],
+                    [dcc.Graph(id="regency_info_graph")],
+                    id="regency_info_div",
+                    style={'max-width': '100%','max-height': '100%'},
                     className="pretty_container five columns",
                 ),
             ],
             className="row flex-display",
+        ),
+
+        # Footer Component
+        # ------------------------------
+        html.Div(
+            [
+                html.Div(
+                    [
+                        html.Img(
+                            src=app.get_asset_url("Barong-Mask.png"),
+                            id="mage",
+                            style={
+                                "height": "80px",
+                                "width": "auto", },
+                        )
+                    ],
+                    className="one column",
+                ),
+                html.Div(
+                    [
+                        html.Div(
+                            [
+                                html.H6("Sources", style={
+                                        "margin-bottom": "0px"},),
+                                html.P(["Bali: https://infocorona.baliprov.go.id/", html.Br(), "Indonesia: https://www.kaggle.com/hendratno/covid19-indonesia"],
+                                       style={"margin-top": "5px", "margin-left": "20px"}),
+                            ]
+                        )
+                    ],
+                    className="ten column",
+                    style={"margin-left": "20px"},
+                    id="footer-des",
+                ),
+                html.Div(
+                    [
+
+                        html.A(
+                            html.Button("About Me", id="learn-more-button"),
+                            href="https://5cac0a0b7a48d9000a0e3c77--portfolio-gatsby-bali.netlify.app/",
+                        ),
+                    ],
+                    className="one column",
+                ),
+            ],
+            id="footer",
+            className="row flex-display",
+            style={"margin-bottom": "10px"},
         ),
     ],
     id="mainContainer",
@@ -337,7 +369,6 @@ app.clientside_callback(
 
 # Region Selector -> show Regency Option
 
-
 @app.callback(
     Output(component_id='regency_selector_div', component_property='style'),
     Input('region_selector', 'value')
@@ -347,7 +378,6 @@ def show_regency_selector(region):
         return {'display': 'inline-block'}
     if region == 'indo':
         return {'display': 'none'}
-
 
 # Selector -> Mini-Container Numbers
 @app.callback(
@@ -376,11 +406,11 @@ def update_mini_containers(regency, region):
     cfr = selected_region['CFR'].iloc[-1]  # .round(2)
     cp100k = selected_region['total_cases_per_100k'].iloc[-2]  # .round(2)
     dp100k = selected_region['total_deaths_per_100k'].iloc[-2]  # .round(2)
+    growth_rate = selected_region['growth_rate'].iloc[-2].round(2)
+    return '{}'.format(cfr), '{}'.format(str(round(cp100k, 2))), '{}'.format(str(round(dp100k, 2))), '{}'.format(str(growth_rate))
 
+# Selectors -> choropleth graph
 
-    return '{}'.format(cfr), '{}'.format(str(round(cp100k, 2))), '{}'.format(str(round(dp100k, 2))), 'not yet'
-
-# Selectors -> main graph
 @app.callback(
     Output("main_graph", "figure"),
     [Input('region_selector', 'value'),
@@ -444,8 +474,88 @@ def make_main_figure(region, case_type, main_graph_layout, ):
     # figure = dict(data=traces, layout=layout)
     return display_fig
 
+# Selectors  -> regency_info_bar Charts
 
-# Selectors -> count graph
+@app.callback(
+    Output('regency_info_graph', 'figure'),
+    Input('region_selector', 'value'),
+)
+
+def make_regency_info_fig(region):
+    if region == 'indo':
+        df = pd.read_csv(data_covid_indo)
+        region_selected = 'indonesia'
+
+    elif region == 'bali':
+        df = pd.read_csv(data_covid_bali)
+        region_selected = 'bali'
+
+    # get latest date
+    ## display per regency, new daily cases (Bar) and cases7 (Line)
+    df_latest = df.sort_values(by=['Date'], ascending=False).head(10)
+    regions = df_latest['Name_EN'].to_list()
+
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+    selected_cases = ['new_cases', 'total_treatment' ]
+    colors = px.colors.sequential.Blues
+    count = 0
+    for selected in selected_cases:
+        count += 2
+        fig.add_trace(
+            go.Bar(
+                x=regions,
+                y=df_latest[selected],
+                name=selected,
+                marker_color=colors[count],
+            ),
+            secondary_y=False,
+        )
+    ## test plots for new cases and
+    count = 0
+    selected_new = []
+    for selected in selected_new:
+        count += 2
+        fig.add_trace(
+            go.Scatter(
+                x=regions,
+                y=df_latest[selected],
+                # mode='lines',
+                name=selected,
+                line=dict(color=colors[count], width=2),
+            ),
+            secondary_y=True
+
+        )
+
+    fig.update_layout(
+        title='{}'.format(df_latest['Date'].iloc(1)),
+        xaxis_tickfont_size=6,
+        yaxis=dict(
+            tickfont_size=6,
+        ),
+        plot_bgcolor=colors[0],
+        paper_bgcolor=colors[0],
+        legend=dict(
+            yanchor="top",
+            y=0.99,
+            xanchor="left",
+            x=0.01,
+            bgcolor='white',
+            bordercolor='white',
+        ),
+        barmode='group',
+        bargap=0.15,  # gap between bars of adjacent location coordinates.
+        bargroupgap=0.1  # gap between bars of the same location coordinate.
+    )
+
+    # Set x-axis title
+    fig.update_yaxes(tickfont_size=6, secondary_y=True)
+
+    return fig
+
+
+
+# Selectors -> time series graph
 @app.callback(
     Output("count_graph", "figure"),
     [Input('region_selector', 'value'), Input(
@@ -463,7 +573,7 @@ def make_count_figure(region, regency):
 
     else:
         df = pd.read_csv(data_covid_bali)
-        region_selected = regency
+        region_selected = str(regency)
 
     df = df[df['Name_EN'].str.match(region_selected)]
 
@@ -472,7 +582,6 @@ def make_count_figure(region, regency):
 
     # fig = go.Figure()
     fig = make_subplots(specs=[[{"secondary_y": True}]])
-
     selected_cases = ['new_cases', 'new_recovered']
     colors = px.colors.sequential.Blues
     count = 0
@@ -526,7 +635,6 @@ def make_count_figure(region, regency):
     )
 
     # Set x-axis title
-    fig.update_xaxes(title_text="Date")
     fig.update_yaxes(tickfont_size=6, secondary_y=True)
 
     return fig

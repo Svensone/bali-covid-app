@@ -87,6 +87,14 @@ body {
 #header {
   align-items: center;
 }
+#header-image2 {
+  height: 100%;
+  padding: 0 20px;
+  float: right;
+}
+#footer {
+  align-items: center;
+}
 
 #learn-more-button {
   text-align: center;
