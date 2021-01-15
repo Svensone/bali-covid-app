@@ -114,7 +114,7 @@ app.layout = html.Div(
                 ),
                 html.Div(
                     [
-                        
+
                         html.A(
                             html.Button("About Me", id="learn-more-button"),
                             href="https://5cac0a0b7a48d9000a0e3c77--portfolio-gatsby-bali.netlify.app/",
@@ -135,7 +135,8 @@ app.layout = html.Div(
             className="row flex-display",
             style={"margin-bottom": "10px"},
         ),
-        # horizontal control bar
+        # Control bar
+        # ------------------------------
         html.Div([
             html.Div([
                 html.Div([
@@ -164,7 +165,7 @@ app.layout = html.Div(
                     id='regency_selector_div')
             ],
                 className='pretty_container thirteen columns',
-                style = {'display': 'inline-block'},
+                style={'display': 'inline-block'},
             )
         ],
             id='new_controls',
@@ -174,31 +175,7 @@ app.layout = html.Div(
             [
                 # # Controls Panel Component
                 # # ------------------------------
-                # html.Div(
-                #     [
-                #         html.P(
-                #             "Region:",
-                #             className='control_label'
-                #         ),
-                #         dcc.RadioItems(
-                #             id='region_selector',
-                #             options=[
-                #                 {'label': 'Indonesia', 'value': 'indo'},
-                #                 {'label': 'Bali', 'value': 'bali'},
-                #             ],
-                #             labelStyle={"display": "inline-block"},
-                #             value="bali",
-                #             className="dcc_control",
-                #         ),
-                #         html.P("Regency/County:",
-                #                className="control_label"),
-                #         dcc.Dropdown(
-                #             id="regency_selector",
-                #             options=regency_options,  # well_type_options,
-                #             multi=False,
-                #             value='',
-                #             className="dcc_control",
-                #         ),
+
                 #         html.P('NOT YET !!', className="control_label",),
                 #         html.P("Date or Timerange:",
                 #                className="control_label",
@@ -210,84 +187,87 @@ app.layout = html.Div(
                 #             value=[1990, 2010],
                 #             className="dcc_control",
                 #         ),
-                #         html.P("Cases:", className="control_label"),
-                #         dcc.RadioItems(
-                #             id="well_status_selector",
-                #             options=[
-                #                 {"label": "All ", "value": "all"},
-                #                 {"label": "Confirmed ", "value": "confirmed"},
-                #                 {"label": "Deaths ", "value": "death"},
-                #                 {"label": "Recovered ", "value": "Recovered"},
-                #                 {"label": "Active ", "value": "active"},
-                #             ],
-                #             value="confirmed",
-                #             labelStyle={"display": "inline-block"},
-                #             className="dcc_control",
-                #         ),
-                #     ],
-                #     className="pretty_container three columns",
-                #     id="cross-filter-options",
-                # ),
 
                 # Data & Graphs Components
                 # ------------------------------
                 html.Div(
                     [
+                        ## Mini Container Row
+                        ##-----------------------
                         html.Div(
                             [
                                 html.Div(
                                     [
-                                    html.P("Case Fatality Rate", 
-                                    style={'text-align': 'center'}),
-                                    html.H6(
-                                        id="cases_mortality", 
-                                        style={'text-align': 'center'}), 
-                                    
-                                     ],
+                                        html.P("Case Fatality Rate",
+                                               style={'text-align': 'center'}),
+                                        html.H6(
+                                            id="cases_mortality",
+                                            style={'text-align': 'center'}),
+
+                                    ],
                                     id="wells",
                                     className="mini_container",
                                 ),
                                 html.Div(
                                     [
-                                    html.P("Cases per 100k", style={'text-align': 'center'}),
-                                    html.H6(id="cases_per_100k", style={'text-align': 'center'})
+                                        html.P("Cases per 100k", style={
+                                               'text-align': 'center'}),
+                                        html.H6(id="cases_per_100k", style={
+                                                'text-align': 'center'})
                                     ],
-                                     
+
                                     id="gas",
                                     className="mini_container",
                                 ),
                                 html.Div(
                                     [
-                                    html.P("Deaths per 100k", style={'text-align': 'center'}),
-                                    html.H6(id="deaths_per_100k", style={'text-align': 'center'}),
-                                     ],
+                                        html.P("Deaths per 100k", style={
+                                               'text-align': 'center'}),
+                                        html.H6(id="deaths_per_100k", style={
+                                                'text-align': 'center'}),
+                                    ],
                                     id="oil",
                                     className="mini_container",
                                 ),
                                 html.Div(
                                     [
-                                        html.P("Growth-rate", style={'text-align': 'center'}),
-                                        html.H6(id="growth_rate", style={'text-align': 'center'}),
-                                     ],
+                                        html.P("Growth-rate",
+                                               style={'text-align': 'center'}),
+                                        html.H6(id="growth_rate", style={
+                                                'text-align': 'center'}),
+                                    ],
                                     id="water",
                                     className="mini_container",
                                 ),
                             ],
                             id="info-container",
-                            className="row container-display",
+                            className="row container-display thirteen columns",
                         ),
-                        html.Div(
-                            [dcc.Graph(id="count_graph")],
-                            id="countGraphContainer",
-                            style={"minHeight": "50vh"},
-                            className="pretty_container",
-                        ),
+                        ## Graph Component
+                        ##--------------------
+                        html.Div([
+                            html.Div(
+                                [dcc.Graph(id="count_graph")],
+                                id="countGraphContainer",
+                                style={"minHeight": "70vh"},
+                                className="pretty_container nine columns",
+                            ),
+                            html.Div(
+                                [dcc.Graph(id="")],
+                                id="",
+                                style={"minHeight": "70vh"},
+                                className="pretty_container four columns",
+                            ),
+                        ],
+                            id="graph-container",
+                            className="row container-display",)
+
                     ],
                     id="right-column",
-                    className="ten columns",
+                    className="thirteen columns",
                 ),
             ],
-            className="row flex-display",
+            className="row flex-display thirteen columns",
         ),
 
 
@@ -308,7 +288,7 @@ app.layout = html.Div(
                 ],),
             ],
                 className='pretty_container thirteen columns',
-                style = {'display': 'inline-block'},
+                style={'display': 'inline-block'},
             )
         ],
             id='',
@@ -356,6 +336,8 @@ app.clientside_callback(
 )
 
 # Region Selector -> show Regency Option
+
+
 @app.callback(
     Output(component_id='regency_selector_div', component_property='style'),
     Input('region_selector', 'value')
@@ -376,7 +358,7 @@ def show_regency_selector(region):
     [Input('regency_selector', 'value'),
      Input('region_selector', 'value')],
 )
-def update_cases_mortality(regency, region):
+def update_mini_containers(regency, region):
     if region == 'indo':
         df = pd.read_csv(data_covid_indo)
         selected_region = df[df['Name_EN'].str.match('indonesia')]
@@ -388,25 +370,28 @@ def update_cases_mortality(regency, region):
     else:
         df = pd.read_csv(data_covid_bali)
         selected_region = df[df['Name_EN'].str.match(regency)]
+
     # print(regency)
     # print(selected_region.head())
     cfr = selected_region['CFR'].iloc[-1]  # .round(2)
     cp100k = selected_region['total_cases_per_100k'].iloc[-2]  # .round(2)
     dp100k = selected_region['total_deaths_per_100k'].iloc[-2]  # .round(2)
 
+
     return '{}'.format(cfr), '{}'.format(str(round(cp100k, 2))), '{}'.format(str(round(dp100k, 2))), 'not yet'
 
 # Selectors -> main graph
 @app.callback(
     Output("main_graph", "figure"),
-    [Input('region_selector', 'value'), 
-    Input('case_type_selector', 'value')],
+    [Input('region_selector', 'value'),
+     Input('case_type_selector', 'value')],
     [State("main_graph", "relayoutData")],
 )
 def make_main_figure(region, case_type, main_graph_layout, ):
-    print(region)
-    print(case_type)
-    print(main_graph_layout)
+    # print(region)
+    # print(case_type)
+    # print(main_graph_layout)
+
     PATH = pathlib.Path(__file__).parent
 
     if region == 'bali':
@@ -431,7 +416,7 @@ def make_main_figure(region, case_type, main_graph_layout, ):
         df,
         geojson=geojson,
         locations='id',
-        color= case_type, 
+        color=case_type,
         mapbox_style='carto-positron',
         hover_name='Name_EN',
         hover_data=['CFR'],
@@ -488,7 +473,7 @@ def make_count_figure(region, regency):
     # fig = go.Figure()
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
-    selected_cases = ['new_cases', 'new_recovered', 'cases7']
+    selected_cases = ['new_cases', 'new_recovered']
     colors = px.colors.sequential.Blues
     count = 0
     for selected in selected_cases:
