@@ -302,7 +302,7 @@ app.layout = html.Div(
                 html.Div(
                     [dcc.Graph(id="regency_info_graph")],
                     id="regency_info_div",
-                    style={'max-width': '100%','max-height': '100%'},
+                    style={'max-width': '100%', 'max-height': '100%'},
                     className="pretty_container five columns",
                 ),
             ],
@@ -369,6 +369,7 @@ app.clientside_callback(
 
 # Region Selector -> show Regency Option
 
+
 @app.callback(
     Output(component_id='regency_selector_div', component_property='style'),
     Input('region_selector', 'value')
@@ -380,6 +381,8 @@ def show_regency_selector(region):
         return {'display': 'none'}
 
 # Selector -> Mini-Container Numbers
+
+
 @app.callback(
     [Output("cases_mortality", "children"),
      Output('cases_per_100k', 'children'),
@@ -407,9 +410,10 @@ def update_mini_containers(regency, region):
     cp100k = selected_region['total_cases_per_100k'].iloc[-1]  # .round(2)
     dp100k = selected_region['total_deaths_per_100k'].iloc[-1]  # .round(2)
     growth_rate = selected_region['growth_rate'].iloc[-1].round(2)
-    return '{}'.format(cfr), '{}'.format(str(round(cp100k, 2))), '{}'.format(str(round(dp100k, 2))), '{}'.format(str(growth_rate) +'%')
+    return '{}'.format(cfr), '{}'.format(str(round(cp100k, 2))), '{}'.format(str(round(dp100k, 2))), '{}'.format(str(growth_rate) + '%')
 
 # Selectors -> choropleth graph
+
 
 @app.callback(
     Output("main_graph", "figure"),
@@ -476,13 +480,13 @@ def make_main_figure(region, case_type, main_graph_layout, ):
 
 # Selectors  -> regency_info_bar Charts
 
+
 @app.callback(
     Output('regency_info_graph', 'figure'),
     [
-    Input('region_selector', 'value'),
-    Input('case_type_selector', 'value'),]
+        Input('region_selector', 'value'),
+        Input('case_type_selector', 'value'), ]
 )
-
 def make_regency_info_fig(region, case_type):
     if region == 'indo':
         df = pd.read_csv(data_covid_indo)
@@ -493,17 +497,18 @@ def make_regency_info_fig(region, case_type):
         region_selected = 'bali'
 
     if case_type == "total_cases_per_100k":
-        c_type = ['new_cases', 'cases7', 'total_treatment', 'total_cases_per_100k']
-    elif case_type =='total_deaths_per_100k':
+        c_type = ['new_cases', 'cases7',
+                  'total_treatment', 'total_cases_per_100k']
+    elif case_type == 'total_deaths_per_100k':
         c_type = ['new_deaths', 'deaths7', 'total_deaths_per_100k']
-    else :
-        c_type= ['new_recovered', 'total_recovered']
+    else:
+        c_type = ['new_recovered', 'total_recovered']
     # get latest date
-    ## display per regency, new daily cases (Bar) and cases7 (Line)
+    # display per regency, new daily cases (Bar) and cases7 (Line)
     df_latest = df.sort_values(by=['Date'], ascending=False).head(10)
     regions = df_latest['Name_EN'].to_list()
 
-    ## Make Graph
+    # Make Graph
     colors = px.colors.sequential.Blues
 
     fig = go.Figure()
@@ -513,14 +518,14 @@ def make_regency_info_fig(region, case_type):
             y=df_latest[c_type[0]],
             name=c_type[0],
             marker_color=colors[4]
-            ))
+        ))
     fig.add_trace(
         go.Bar(
             x=regions,
             y=df_latest[c_type[1]],
             name=c_type[1],
             marker_color=colors[6]
-    ))
+        ))
 
     fig.update_layout(
         # title='{}'.format(df_latest['Date'].iloc(1)),
@@ -547,7 +552,6 @@ def make_regency_info_fig(region, case_type):
     # fig.update_yaxes(tickfont_size=6, secondary_y=True)
 
     return fig
-
 
 
 # Selectors -> time series graph
@@ -610,11 +614,11 @@ def make_count_figure(region, regency):
 
     fig.update_layout(
         title={
-        'text': 'Daily Cases in {}'.format(region_selected),
-        'y':0.9,
-        'x':0.5,
-        'xanchor': 'center',
-        'yanchor': 'top'},        
+            'text': 'Daily Cases in {}'.format(region_selected),
+            'y': 0.9,
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'},
         xaxis_tickfont_size=6,
         yaxis=dict(
             tickfont_size=6,
