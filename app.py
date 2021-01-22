@@ -345,7 +345,7 @@ app.layout = html.Div(
 
                         html.A(
                             html.Button("About Me", id="learn-more-button"),
-                            href="https://5cac0a0b7a48d9000a0e3c77--portfolio-gatsby-bali.netlify.app/",
+                            href="https://portfolio-gatsby-bali.netlify.app/", target='_blank' ,
                         ),
                     ],
                     className="one column",
