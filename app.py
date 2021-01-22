@@ -409,7 +409,7 @@ def update_mini_containers(regency, region):
     cfr = selected_region['CFR'].iloc[-1]  # .round(2)
     cp100k = selected_region['total_cases_per_100k'].iloc[-1]  # .round(2)
     dp100k = selected_region['total_deaths_per_100k'].iloc[-1]  # .round(2)
-    growth_rate = selected_region['growth_rate'].iloc[-1].round(2)
+    growth_rate = selected_region['growth_rate_new_cases'].iloc[-1].round(2)
     return '{}'.format(cfr), '{}'.format(str(round(cp100k, 2))), '{}'.format(str(round(dp100k, 2))), '{}'.format(str(growth_rate) + '%')
 
 # Selectors -> choropleth graph
