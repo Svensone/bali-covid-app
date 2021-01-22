@@ -576,7 +576,7 @@ def make_count_figure(region, regency):
 
     df = df[df['Name_EN'].str.match(region_selected)]
 
-    df_test = df.tail(100)
+    df_test = df #.tail(100)
     days = df_test.Date.to_list()
 
     # fig = go.Figure()
