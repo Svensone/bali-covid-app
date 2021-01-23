@@ -366,10 +366,9 @@ app.clientside_callback(
     Output("output-clientside", "children"),
     [Input("count_graph", "figure")],
 )
-
+#######################################
 # Region Selector -> show Regency Option
-
-
+#######################################
 @app.callback(
     Output(component_id='regency_selector_div', component_property='style'),
     Input('region_selector', 'value')
@@ -379,10 +378,9 @@ def show_regency_selector(region):
         return {'display': 'inline-block'}
     if region == 'indo':
         return {'display': 'none'}
-
+#######################################
 # Selector -> Mini-Container Numbers
-
-
+#######################################
 @app.callback(
     [Output("cases_mortality", "children"),
      Output('cases_per_100k', 'children'),
@@ -392,28 +390,117 @@ def show_regency_selector(region):
      Input('region_selector', 'value')],
 )
 def update_mini_containers(regency, region):
+    # print(regency)
+    # print(region)
     if region == 'indo':
         df = pd.read_csv(data_covid_indo)
         selected_region = df[df['Name_EN'].str.match('indonesia')]
-
-    elif region == 'bali' and regency == '':
+    elif region == 'bali' and regency == '' or regency == None :
         df = pd.read_csv(data_covid_indo)
         selected_region = df[df['Name_EN'].str.match('bali')]
-
     else:
         df = pd.read_csv(data_covid_bali)
         selected_region = df[df['Name_EN'].str.match(regency)]
 
-    # print(regency)
-    # print(selected_region.head())
     cfr = selected_region['CFR'].iloc[-1]  # .round(2)
     cp100k = selected_region['total_cases_per_100k'].iloc[-1]  # .round(2)
     dp100k = selected_region['total_deaths_per_100k'].iloc[-1]  # .round(2)
     growth_rate = selected_region['growth_rate_new_cases'].iloc[-1].round(2)
     return '{}'.format(cfr), '{}'.format(str(round(cp100k, 2))), '{}'.format(str(round(dp100k, 2))), '{}'.format(str(growth_rate) + '%')
 
-# Selectors -> choropleth graph
+##################################
+# Selectors -> time series graph
+###################################
+@app.callback(
+    Output("count_graph", "figure"),
+    [Input('region_selector', 'value'), Input(
+        'regency_selector', 'value')],)
+def make_count_figure(region, regency):
+    print(region)
+    print(regency)
 
+    if region == 'indo':
+        df = pd.read_csv(data_covid_indo)
+        region_selected = 'indonesia'
+    elif region == 'bali' and regency == '' or regency == None:
+        df = pd.read_csv(data_covid_indo)
+        region_selected = 'bali'
+    else:
+        df = pd.read_csv(data_covid_bali)
+        region_selected = str(regency)
+
+    df = df[df['Name_EN'].str.match(region_selected)]
+
+    df_test = df #.tail(100)
+    days = df_test.Date.to_list()
+
+    # fig = go.Figure()
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+    selected_cases = ['new_cases', 'new_recovered']
+    colors = px.colors.sequential.Blues
+    count = 0
+    for selected in selected_cases:
+        count += 2
+        fig.add_trace(
+            go.Bar(
+                x=days,
+                y=df_test[selected],
+                name=selected,
+                marker_color=colors[count],
+            ),
+            secondary_y=False,
+        )
+    # test plots for new cases and
+    count = 0
+    selected_new = ['total_deaths_per_100k', 'CFR', ]
+    for selected in selected_new:
+        count += 2
+        fig.add_trace(
+            go.Scatter(
+                x=days,
+                y=df_test[selected],
+                # mode='lines',
+                name=selected,
+                line=dict(color=colors[count], width=2),
+            ),
+            secondary_y=True
+
+        )
+
+    fig.update_layout(
+        title={
+            'text': 'Daily Cases in {}'.format(region_selected),
+            'y': 0.9,
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'},
+        xaxis_tickfont_size=6,
+        yaxis=dict(
+            tickfont_size=6,
+        ),
+        plot_bgcolor=colors[0],
+        paper_bgcolor=colors[0],
+        legend=dict(
+            yanchor="top",
+            y=0.99,
+            xanchor="left",
+            x=0.01,
+            bgcolor='white',
+            bordercolor='white',
+        ),
+        barmode='group',
+        bargap=0.15,  # gap between bars of adjacent location coordinates.
+        bargroupgap=0.1  # gap between bars of the same location coordinate.
+    )
+
+    # Set x-axis title
+    fig.update_yaxes(tickfont_size=6, secondary_y=True)
+
+    return fig
+
+##################################
+# Selectors -> choropleth graph
+###################################
 
 @app.callback(
     Output("main_graph", "figure"),
@@ -552,97 +639,6 @@ def make_regency_info_fig(region, case_type):
     # fig.update_yaxes(tickfont_size=6, secondary_y=True)
 
     return fig
-
-
-# Selectors -> time series graph
-@app.callback(
-    Output("count_graph", "figure"),
-    [Input('region_selector', 'value'), Input(
-        'regency_selector', 'value')],
-)
-def make_count_figure(region, regency):
-
-    if region == 'indo':
-        df = pd.read_csv(data_covid_indo)
-        region_selected = 'indonesia'
-
-    elif region == 'bali' and regency == '':
-        df = pd.read_csv(data_covid_indo)
-        region_selected = 'bali'
-
-    else:
-        df = pd.read_csv(data_covid_bali)
-        region_selected = str(regency)
-
-    df = df[df['Name_EN'].str.match(region_selected)]
-
-    df_test = df #.tail(100)
-    days = df_test.Date.to_list()
-
-    # fig = go.Figure()
-    fig = make_subplots(specs=[[{"secondary_y": True}]])
-    selected_cases = ['new_cases', 'new_recovered']
-    colors = px.colors.sequential.Blues
-    count = 0
-    for selected in selected_cases:
-        count += 2
-        fig.add_trace(
-            go.Bar(
-                x=days,
-                y=df_test[selected],
-                name=selected,
-                marker_color=colors[count],
-            ),
-            secondary_y=False,
-        )
-    # test plots for new cases and
-    count = 0
-    selected_new = ['total_deaths_per_100k', 'CFR', ]
-    for selected in selected_new:
-        count += 2
-        fig.add_trace(
-            go.Scatter(
-                x=days,
-                y=df_test[selected],
-                # mode='lines',
-                name=selected,
-                line=dict(color=colors[count], width=2),
-            ),
-            secondary_y=True
-
-        )
-
-    fig.update_layout(
-        title={
-            'text': 'Daily Cases in {}'.format(region_selected),
-            'y': 0.9,
-            'x': 0.5,
-            'xanchor': 'center',
-            'yanchor': 'top'},
-        xaxis_tickfont_size=6,
-        yaxis=dict(
-            tickfont_size=6,
-        ),
-        plot_bgcolor=colors[0],
-        paper_bgcolor=colors[0],
-        legend=dict(
-            yanchor="top",
-            y=0.99,
-            xanchor="left",
-            x=0.01,
-            bgcolor='white',
-            bordercolor='white',
-        ),
-        barmode='group',
-        bargap=0.15,  # gap between bars of adjacent location coordinates.
-        bargroupgap=0.1  # gap between bars of the same location coordinate.
-    )
-
-    # Set x-axis title
-    fig.update_yaxes(tickfont_size=6, secondary_y=True)
-
-    return fig
-
 
 # Main
 if __name__ == "__main__":
