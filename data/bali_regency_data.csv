@@ -609,3 +609,23 @@
 607,8,,KARANGASEM,0,23,0,63,5,1251,0,0,,,,,,,,,,karangasem,Karangasem,Amlapura,839.54,360.486,396.487,408.487,0.640 (Medium),I Gusti Ayu Mas Sumatri,8.0,3/75,0.0,3.06,0.0,0.0,13.142857142857142,7.16,inf,,6
 608,9,,BULELENG,0,41,0,23,28,2032,0,0,,,,,,,,,,buleleng,Buleleng,Singaraja,"1,364.73",558.181,624.125,645.893,0.691 (Medium),Putu Agus Suradnyana,9.0,19/129,0.0,3.15,0.0,0.0,15.857142857142858,6.5,inf,,3
 609,10,,KABUPATEN LAINNYA,0,6,0,78,0,234,0,0,,,,,,,,,,kabupaten lainnya,,,,,,,,,,,,,0.0,,12.142857142857142,,inf,,0
+610,1,,JEMBRANA,0,26,0,50,9,1704,0,0,,,,,,,,,,jembrana,Jembrana,Negara,841.80,231.806,261.638,271.423,0.686 (Medium),I Putu Artha,5.0,10/41,0.0,6.28,0.0,0.0,11.142857142857142,,inf,,5
+611,2,,TABANAN,0,23,-1,90,14,3399,0,0,,,,,,,,,,tabanan,Tabanan,Tabanan,839.30,376.03,420.913,435.753,0.726 (High),Ni Putu Eka Wiryastuti,10.0,-/133,0.0,7.8,0.0,0.0,8.714285714285714,,inf,,9
+612,3,,BADUNG,0,30,3,187,19,5472,0,0,,,,,,,,,,badung,Badung,Mangupura,418.52,345.863,543.332,615.148,0.779 (High),I Nyoman Giri Prasta,6.0,16/46,0.0,8.9,0.0,0.0,11.428571428571429,,inf,,1
+613,4,,DENPASAR,0,48,15,471,178,8722,0,0,,,,,,,,,,denpasar,Kota Denpasar,Denpasar,127.78,532.44,788.589,879.098,0.816 (Very High),Ida Bagus Rai Dharmawijaya Mantra,4.0,16/27,0.0,9.92,0.0,0.0,36.142857142857146,,inf,,8
+614,5,,GIANYAR,0,32,4,244,24,3578,0,0,,,,,,,,,,gianyar,Gianyar,Gianyar,368.00,393.155,469.777,494.729,0.742 (High),I Made Agus Mahayastra,7.0,6/64,0.0,7.23,0.0,0.0,38.857142857142854,,inf,,4
+615,6,,BANGLI,0,58,0,13,6,1530,0,0,,,,,,,,,,bangli,Bangli,Bangli,490.71,193.776,215.353,222.474,0.657 (Medium),I Made Gianyar,4.0,4/68,0.0,6.88,0.0,0.0,35.714285714285715,,inf,,2
+616,7,,KLUNGKUNG,0,19,0,13,0,1171,0,0,,,,,,,,,,klungkung,Klungkung,Semarapura,315.00,155.262,170.543,175.573,0.683 (Medium),I Nyoman Suwirta,4.0,6/53,0.0,6.67,0.0,0.0,35.714285714285715,7.67,inf,,7
+617,8,,KARANGASEM,0,23,0,63,1,1252,0,0,,,,,,,,,,karangasem,Karangasem,Amlapura,839.54,360.486,396.487,408.487,0.640 (Medium),I Gusti Ayu Mas Sumatri,8.0,3/75,0.0,3.06,0.0,0.0,34.57142857142857,7.21,inf,,6
+618,9,,BULELENG,0,41,0,23,0,2032,0,0,,,,,,,,,,buleleng,Buleleng,Singaraja,"1,364.73",558.181,624.125,645.893,0.691 (Medium),Putu Agus Suradnyana,9.0,19/129,0.0,3.15,0.0,0.0,32.57142857142857,6.54,inf,,3
+619,10,,KABUPATEN LAINNYA,0,6,1,79,1,235,0,0,,,,,,,,,,kabupaten lainnya,,,,,,,,,,,,,0.0,,30.0,,inf,,0
+620,1,,JEMBRANA,0,26,0,50,2,1706,0,0,,,,,,,,,,jembrana,Jembrana,Negara,841.80,231.806,261.638,271.423,0.686 (Medium),I Putu Artha,5.0,10/41,0.0,6.29,0.0,0.0,4.857142857142857,,inf,,5
+621,2,,TABANAN,0,23,2,92,17,3416,0,0,,,,,,,,,,tabanan,Tabanan,Tabanan,839.30,376.03,420.913,435.753,0.726 (High),Ni Putu Eka Wiryastuti,10.0,-/133,0.0,7.84,0.0,0.0,3.857142857142857,,inf,,9
+622,3,,BADUNG,0,30,8,195,30,5502,0,0,,,,,,,,,,badung,Badung,Mangupura,418.52,345.863,543.332,615.148,0.779 (High),I Nyoman Giri Prasta,6.0,16/46,0.0,8.94,0.0,0.0,7.285714285714286,,inf,,1
+623,4,,DENPASAR,0,48,2,473,121,8843,0,0,,,,,,,,,,denpasar,Kota Denpasar,Denpasar,127.78,532.44,788.589,879.098,0.816 (Very High),Ida Bagus Rai Dharmawijaya Mantra,4.0,16/27,0.0,10.06,0.0,0.0,24.571428571428573,,inf,,8
+624,5,,GIANYAR,0,32,6,250,15,3593,0,0,,,,,,,,,,gianyar,Gianyar,Gianyar,368.00,393.155,469.777,494.729,0.742 (High),I Made Agus Mahayastra,7.0,6/64,0.0,7.26,0.0,0.0,26.571428571428573,,inf,,4
+625,6,,BANGLI,0,58,0,13,18,1548,0,0,,,,,,,,,,bangli,Bangli,Bangli,490.71,193.776,215.353,222.474,0.657 (Medium),I Made Gianyar,4.0,4/68,0.0,6.96,0.0,0.0,29.142857142857142,,inf,,2
+626,7,,KLUNGKUNG,0,19,1,14,12,1183,0,0,,,,,,,,,,klungkung,Klungkung,Semarapura,315.00,155.262,170.543,175.573,0.683 (Medium),I Nyoman Suwirta,4.0,6/53,0.0,6.74,0.0,0.0,30.714285714285715,7.73,inf,,7
+627,8,,KARANGASEM,0,23,0,63,6,1258,0,0,,,,,,,,,,karangasem,Karangasem,Amlapura,839.54,360.486,396.487,408.487,0.640 (Medium),I Gusti Ayu Mas Sumatri,8.0,3/75,0.0,3.08,0.0,0.0,31.285714285714285,7.27,inf,,6
+628,9,,BULELENG,0,41,0,23,32,2064,0,0,,,,,,,,,,buleleng,Buleleng,Singaraja,"1,364.73",558.181,624.125,645.893,0.691 (Medium),Putu Agus Suradnyana,9.0,19/129,0.0,3.2,0.0,0.0,33.42857142857143,6.61,inf,,3
+629,10,,KABUPATEN LAINNYA,0,6,2,81,0,235,0,0,,,,,,,,,,kabupaten lainnya,,,,,,,,,,,,,0.0,,29.142857142857142,,inf,,0
