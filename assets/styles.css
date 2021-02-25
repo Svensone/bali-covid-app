@@ -76,8 +76,8 @@ body {
 
 #count_graph {
   position: absolute;
-  height: calc(100% - 30px);
-  width: calc(100% - 30px);
+  height: calc(100%);
+  width: calc(100%);
 }
 
 #countGraphContainer {
@@ -124,17 +124,13 @@ body {
   display: flex;
   flex-direction: column;
 }
-
+/* Old ids - Mini Info Container Elements */
 #wells {
   flex: 1;
 }
 
 #gas {
   flex: 1;
-}
-
-#aggregate_data {
-  align-items: center;
 }
 
 #oil {
@@ -144,6 +140,21 @@ body {
 #water {
   flex: 1;
 }
+#info_box1 {
+  flex: 1;
+}
+
+/* Mini Info Container "Compare" 2 */
+
+#compare_info_box1, #compare_cases_mortality1, #compare_cases_per_100k1, #compare_deaths_per_100k1, #compare_growth_rate1 {
+  flex: 1;
+}
+
+
+#aggregate_data {
+  align-items: center;
+}
+
 
 #tripleContainer {
   display: flex;
