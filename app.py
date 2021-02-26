@@ -503,8 +503,12 @@ def update_mini_containers1(regency, region):
     selected_region['growth_rate_new_cases'] = selected_region['new_cases'].pct_change(
         fill_method='ffill', periods=7)
     growth_rate = selected_region['growth_rate_new_cases'].iloc[-1].round(2)
-    
-    return '{} {} {}'.format(region, regency, str(date)), '{}'.format(str(round(cfr, 2))), '{}'.format(str(round(cp100k, 2))), '{}'.format(str(round(dp100k, 2))), '{}'.format(str(growth_rate) + '%')
+    if regency != None :
+        region_select = (region + ' ' + regency)
+    else :
+        region_select = region
+
+    return '{} {}'.format(str(date), region_select), '{}'.format(str(round(cfr, 2))), '{}'.format(str(round(cp100k, 2))), '{}'.format(str(round(dp100k, 2))), '{}'.format(str(growth_rate) + '%')
 
 #######################################
 # Selector -> Mini-Container Comparison
@@ -532,7 +536,7 @@ def show_regency_selector(compare_with):
     ],
 )
 def update_mini_containers1(compare_with):
-    print(compare_with)
+    # print(compare_with)
     df = pd.read_csv(data_world)
     selected_region = df[df['location'].str.match(compare_with)]
 
