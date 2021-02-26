@@ -33,7 +33,8 @@ DATA_PATH = PATH.joinpath("data").resolve()
 data_covid_bali = DATA_PATH.joinpath('bali_regency_data.csv')
 data_covid_indo = DATA_PATH.joinpath('indo_province_data.csv')
 data_covid_germany = DATA_PATH.joinpath('county_covid_BW.csv')
-data_covid_world = DATA_PATH.joinpath('owid-covid-data.csv')
+data_world = DATA_PATH.joinpath('world_data.csv')
+
 geojson_bali = DATA_PATH.joinpath('new_bali_id.geojson')
 geojson_indo = DATA_PATH.joinpath('new_indo_id.geojson')
 geojson_germany = DATA_PATH.joinpath('geojson_ger.json')
@@ -135,7 +136,7 @@ app.layout = html.Div(
         # ------------------------------
         html.Div([
             html.Div([
-                
+
                 html.Div([
                     html.P("Region:", className='control_label'),
                     dcc.RadioItems(
@@ -148,8 +149,8 @@ app.layout = html.Div(
                         value="bali",
                         className="dcc_control",),
                 ],
-                style={'display': 'inline-block'},
-                id='region_selector_div',
+                    style={'display': 'inline-block'},
+                    id='region_selector_div',
                 ),
                 html.Div([
                     html.P("Regency/County:",
@@ -161,30 +162,28 @@ app.layout = html.Div(
                         value='',
                         className="dcc_control",
                     ),
-                    ],
+                ],
                     style={'display': 'inline-block'},
                     id='regency_selector_div'),
                 html.Div([
                     html.P("Compare data with:", className='control_label'),
                     dcc.Dropdown(
                         id='compare_with',
-                        options= [
-                            {'label': 'World', 'value': 'world'},
-                            {'label': 'Indonesia', 'value': 'indo'},
-                            
-                            {'label': 'Australia', 'value': 'australia'},
-                            {'label': 'Germany', 'value': 'germany'},
-                            
-                            {'label': 'United Kingdom', 'value': 'uk'},
-                            {'label': 'Italy', 'value': 'italy'},
+                        options=[
+                            {'label': 'World', 'value': 'World'},
+                            {'label': 'Indonesia', 'value': 'Indonesia'},
+                            {'label': 'Australia', 'value': 'Australia'},
+                            {'label': 'Germany', 'value': 'Germany'},
+                            {'label': 'United Kingdom', 'value': 'United Kingdom'},
+                            {'label': 'Italy', 'value': 'Italy'},
                         ],
                         multi=False,
                         value='',
-                        className = 'dcc_control'
+                        className='dcc_control'
                     ),
                 ],
-                style={'display': 'inline-block'},
-                id='compare_div'
+                    style={'display': 'inline-block'},
+                    id='compare_div'
                 ),
             ],
                 className='pretty_container thirteen columns',
@@ -192,7 +191,7 @@ app.layout = html.Div(
             )
         ],
             id='new_controls',
-            className="row flex-display",
+            className="row",
         ),
         # # Controls Panel Component
         # # ------------------------------
@@ -215,8 +214,7 @@ app.layout = html.Div(
             [
                 html.Div(
                     [
-                        html.P("Latest Data: ",
-                               style={'text-align': 'center'}),
+                        
                         html.H6(
                             id="info_box",
                             style={'text-align': 'center'}),
@@ -278,12 +276,9 @@ app.layout = html.Div(
             [
                 html.Div(
                     [
-                        html.P("Compare with - latest Data: ",
-                               style={'text-align': 'center'}),
-                        html.H6(
+                                            html.H6(
                             id="compare_info_box",
                             style={'text-align': 'center'}),
-
                     ],
                     id="compare_info_box1",
                     className="mini_container",
@@ -293,7 +288,6 @@ app.layout = html.Div(
                         html.H6(
                             id="compare_cases_mortality",
                             style={'text-align': 'center'}),
-
                     ],
                     id="compare_cases_mortality1",
                     className="mini_container",
@@ -303,7 +297,6 @@ app.layout = html.Div(
                         html.H6(id="compare_cases_per_100k", style={
                             'text-align': 'center'})
                     ],
-
                     id="compare_cases_per_100k1",
                     className="mini_container",
                 ),
@@ -320,7 +313,7 @@ app.layout = html.Div(
                         html.H6(id="compare_growth_rate", style={
                             'text-align': 'center'}),
                     ],
-                    id="compare_growth_rate1", #originally id='water' -> change in .css file 
+                    id="compare_growth_rate1",  # originally id='water' -> change in .css file
                     className="mini_container",
                 ),
             ],
@@ -353,10 +346,10 @@ app.layout = html.Div(
 
         ],
             id="graph-container",
-            
+
             className="row flex-display",
             # className="row container-display",
-            ),
+        ),
 
         # Control Bar 2
         # --------------------
@@ -443,7 +436,7 @@ app.layout = html.Div(
 
                         html.A(
                             html.Button("About Me", id="learn-more-button"),
-                            href="https://portfolio-sven.netlify.app/", target='_blank' ,
+                            href="https://portfolio-sven.netlify.app/", target='_blank',
                         ),
                     ],
                     className="one column",
@@ -467,23 +460,26 @@ app.clientside_callback(
 #######################################
 # Region Selector -> show Regency Option
 #######################################
+
 @app.callback(
     Output(component_id='regency_selector_div', component_property='style'),
     Input('region_selector', 'value')
 )
 def show_regency_selector(region):
     if region == 'bali':
-        return {'display': 'inline-block'}
+        return {'display': 'inline-block'} #, 'flex-direction': 'row' 
     if region == 'indo':
         return {'display': 'none'}
 #######################################
 # Selector -> Mini-Container Numbers
 #######################################
 @app.callback(
-    [Output("cases_mortality", "children"),
-     Output('cases_per_100k', 'children'),
-     Output('deaths_per_100k', 'children'),
-     Output('growth_rate', 'children')],
+    [
+        Output("info_box", "children"),
+        Output("cases_mortality", "children"),
+        Output('cases_per_100k', 'children'),
+        Output('deaths_per_100k', 'children'),
+        Output('growth_rate', 'children')],
     [Input('regency_selector', 'value'),
      Input('region_selector', 'value')],
 )
@@ -493,25 +489,69 @@ def update_mini_containers1(regency, region):
     if region == 'indo':
         df = pd.read_csv(data_covid_indo)
         selected_region = df[df['Name_EN'].str.match('indonesia')]
-    elif region == 'bali' and regency == '' or regency == None :
+    elif region == 'bali' and regency == '' or regency == None:
         df = pd.read_csv(data_covid_indo)
         selected_region = df[df['Name_EN'].str.match('bali')]
     else:
         df = pd.read_csv(data_covid_bali)
         selected_region = df[df['Name_EN'].str.match(regency)]
-
+    date = selected_region["Date"].iloc[-1]
     cfr = selected_region['CFR'].iloc[-1]
     # cfr = cfr.apply(pd.to_numeric)  # .round(2)
     cp100k = selected_region['total_cases_per_100k'].iloc[-1]  # .round(2)
     dp100k = selected_region['total_deaths_per_100k'].iloc[-1]  # .round(2)
-    selected_region['growth_rate_new_cases'] = selected_region['new_cases'].pct_change(fill_method ='ffill', periods=7)
+    selected_region['growth_rate_new_cases'] = selected_region['new_cases'].pct_change(
+        fill_method='ffill', periods=7)
+    growth_rate = selected_region['growth_rate_new_cases'].iloc[-1].round(2)
+    
+    return '{} {} {}'.format(region, regency, str(date)), '{}'.format(str(round(cfr, 2))), '{}'.format(str(round(cp100k, 2))), '{}'.format(str(round(dp100k, 2))), '{}'.format(str(growth_rate) + '%')
+
+#######################################
+# Selector -> Mini-Container Comparison
+#######################################
+## only visible if selected
+@app.callback(
+    Output(component_id='info-container1', component_property='style'),
+    Input('compare_with', 'value')
+)
+def show_regency_selector(compare_with):
+    if compare_with == '' or  compare_with == None:
+        return {'display': 'none'}
+    else :
+        return {'display': 'flex', 'flex-direction': 'row'}
+
+@app.callback(
+    [
+        Output("compare_info_box", "children"),
+        Output("compare_cases_mortality", "children"),
+        Output('compare_cases_per_100k', 'children'),
+        Output('compare_deaths_per_100k', 'children'),
+        Output('compare_growth_rate', 'children')],
+    [
+        Input('compare_with', 'value'),
+    ],
+)
+def update_mini_containers1(compare_with):
+    print(compare_with)
+    df = pd.read_csv(data_world)
+    selected_region = df[df['location'].str.match(compare_with)]
+
+    date = selected_region["Date"].iloc[-1]
+    cfr = selected_region['CFR'].iloc[-1]
+    # cfr = cfr.apply(pd.to_numeric)  # .round(2)
+    cp100k = selected_region['total_cases_per_100k'].iloc[-1].round(2)
+    dp100k = selected_region['total_deaths_per_100k'].iloc[-1].round(2)
+    selected_region['growth_rate_new_cases'] = selected_region['new_cases'].pct_change(
+        fill_method='ffill', periods=7)
     growth_rate = selected_region['growth_rate_new_cases'].iloc[-1].round(2)
 
-    return '{}'.format(str(round(cfr, 2))), '{}'.format(str(round(cp100k, 2))), '{}'.format(str(round(dp100k, 2))), '{}'.format(str(growth_rate) + '%')
+    return '{} {}'.format(str(date), compare_with), '{}'.format(str(round(cfr, 2))), '{}'.format(str(round(cp100k, 2))), '{}'.format(str(round(dp100k, 2))), '{}'.format(str(growth_rate) + '%')
 
 ##################################
 # Selectors -> time series graph
 ###################################
+
+
 @app.callback(
     Output("count_graph", "figure"),
     [Input('region_selector', 'value'), Input(
@@ -532,7 +572,7 @@ def make_count_figure(region, regency):
 
     df = df[df['Name_EN'].str.match(region_selected)]
 
-    df_test = df #.tail(100)
+    df_test = df  # .tail(100)
     days = df_test.Date.to_list()
 
     # fig = go.Figure()
@@ -602,6 +642,7 @@ def make_count_figure(region, regency):
 ##################################
 # Selectors -> choropleth graph
 ###################################
+
 
 @app.callback(
     Output("main_graph", "figure"),
@@ -740,6 +781,7 @@ def make_regency_info_fig(region, case_type):
     # fig.update_yaxes(tickfont_size=6, secondary_y=True)
 
     return fig
+
 
 # Main
 if __name__ == "__main__":
