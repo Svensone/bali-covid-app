@@ -482,12 +482,13 @@ def show_regency_selector(region):
         Output('growth_rate', 'children')],
     [Input('regency_selector', 'value'),
      Input('region_selector', 'value')],
+
 )
 def update_mini_containers1(regency, region):
     # print(regency)
     # print(region)
     if region == 'indo':
-        df = pd.read_csv(data_covid_indo)
+        df = pd.read_csv( )
         selected_region = df[df['Name_EN'].str.match('indonesia')]
     elif region == 'bali' and regency == '' or regency == None:
         df = pd.read_csv(data_covid_indo)
