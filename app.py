@@ -30,9 +30,13 @@ DATA_PATH = PATH.joinpath("data").resolve()
 # 1. Data
 # ------------------------------------------------------------------------------
 
+# bali regencies
 data_covid_bali = DATA_PATH.joinpath('bali_regency_data.csv')
+# indo provinces (change to kawalcovid)
 data_covid_indo = DATA_PATH.joinpath('indo_province_data.csv')
+# delete bw Data
 data_covid_germany = DATA_PATH.joinpath('county_covid_BW.csv')
+# data comparison and indo !
 data_world = DATA_PATH.joinpath('world_data.csv')
 
 geojson_bali = DATA_PATH.joinpath('new_bali_id.geojson')
@@ -214,7 +218,8 @@ app.layout = html.Div(
             [
                 html.Div(
                     [
-                        
+                        html.P(id="info_box_paragraph",
+                               style={'text-align': 'center'}),
                         html.H6(
                             id="info_box",
                             style={'text-align': 'center'}),
@@ -266,6 +271,15 @@ app.layout = html.Div(
                     id="water",
                     className="mini_container",
                 ),
+
+                html.Div(
+                    [
+                        html.P("Fun_Facts", style={'text-align': 'center'}),
+
+                    ],
+                    id="fun_facts1",
+                    className="mini_container",
+                ),
             ],
             id="info-container",
             className="row container-display thirteen columns",
@@ -275,11 +289,10 @@ app.layout = html.Div(
         html.Div(
             [
                 html.Div(
-                    [
-                                            html.H6(
-                            id="compare_info_box",
-                            style={'text-align': 'center'}),
-                    ],
+                    [html.H6(
+                        id="compare_info_box",
+                        style={'text-align': 'center'}),
+                     ],
                     id="compare_info_box1",
                     className="mini_container",
                 ),
@@ -314,6 +327,27 @@ app.layout = html.Div(
                             'text-align': 'center'}),
                     ],
                     id="compare_growth_rate1",  # originally id='water' -> change in .css file
+                    className="mini_container",
+                ),
+                html.Div(
+                    [
+                        html.P("Fun_Facts", style={'text-align': 'center'}),
+
+                        html.P("Male Smokers", style={'text_align': 'left'}),
+                        html.H6(id="compare_male_smokers",
+                                style={'text-align': 'center'}),
+                        html.P("Stringency Index", style={
+                               'text_align': 'left'}),
+                        html.H6(id="compare_stringency_index",
+                                style={'text-align': 'center'}),
+                        html.P("Median Age", style={'text_align': 'left'}),
+                        html.H6(id="compare_median_age", style={
+                                'text-align': 'center'}),
+                        # Fun data: ‘Male_smokers’, hospital_beths_per_thousands, median_age, stringency_index, people_fully_vaccinated
+                        # Positivity_rate, test_per_cases
+
+                    ],
+                    id="compare_fun_facts1",
                     className="mini_container",
                 ),
             ],
@@ -461,25 +495,31 @@ app.clientside_callback(
 # Region Selector -> show Regency Option
 #######################################
 
+
 @app.callback(
     Output(component_id='regency_selector_div', component_property='style'),
     Input('region_selector', 'value')
 )
 def show_regency_selector(region):
     if region == 'bali':
-        return {'display': 'inline-block'} #, 'flex-direction': 'row' 
+        return {'display': 'inline-block'}  # , 'flex-direction': 'row'
     if region == 'indo':
         return {'display': 'none'}
 #######################################
 # Selector -> Mini-Container Numbers
-#######################################
+######################################
+
+
 @app.callback(
     [
+        Output("info_box_paragraph", "children"),
         Output("info_box", "children"),
         Output("cases_mortality", "children"),
         Output('cases_per_100k', 'children'),
         Output('deaths_per_100k', 'children'),
-        Output('growth_rate', 'children')],
+        Output('growth_rate', 'children')
+    ],
+
     [Input('regency_selector', 'value'),
      Input('region_selector', 'value')],
 
@@ -488,50 +528,58 @@ def update_mini_containers1(regency, region):
     # print(regency)
     # print(region)
     if region == 'indo':
-        df = pd.read_csv( )
-        selected_region = df[df['Name_EN'].str.match('indonesia')]
+        df = pd.read_csv(data_world)
+        selected_region = df[df['location'].str.match('Indonesia')]
+        region_selected = 'Indonesia'
+
     elif region == 'bali' and regency == '' or regency == None:
         df = pd.read_csv(data_covid_indo)
         selected_region = df[df['Name_EN'].str.match('bali')]
+        region_select = "Bali"
     else:
         df = pd.read_csv(data_covid_bali)
-        selected_region = df[df['Name_EN'].str.match(regency)]
+        selected_region = df[df['Name_EN'].str.match((regency.lower()))]
+        region_select = 'Bali ' + regency
+
     date = selected_region["Date"].iloc[-1]
     cfr = selected_region['CFR'].iloc[-1]
     # cfr = cfr.apply(pd.to_numeric)  # .round(2)
     cp100k = selected_region['total_cases_per_100k'].iloc[-1]  # .round(2)
-    dp100k = selected_region['total_deaths_per_100k'].iloc[-1]  # .round(2)
+    dp100k = selected_region['total_deaths_per_100k'].iloc[-1]  # .round()
     selected_region['growth_rate_new_cases'] = selected_region['new_cases'].pct_change(
         fill_method='ffill', periods=7)
-    growth_rate = selected_region['growth_rate_new_cases'].iloc[-1].round(2)
-    if regency != None :
-        region_select = (region + ' ' + regency)
-    else :
-        region_select = region
 
-    return '{} {}'.format(str(date), region_select), '{}'.format(str(round(cfr, 2))), '{}'.format(str(round(cp100k, 2))), '{}'.format(str(round(dp100k, 2))), '{}'.format(str(growth_rate) + '%')
+    growth_rate = selected_region.loc[:,
+                                      ('growth_rate_new_cases')].iloc[-1].round()
+    return '{}'.format(str(date)), '{}'.format(region_select), '{}'.format(str(round(cfr, 2))), '{}'.format(str(round(cp100k, 2))), '{}'.format(round(dp100k, 0)), '{}'.format(str(growth_rate) + '%')
 
 #######################################
 # Selector -> Mini-Container Comparison
 #######################################
-## only visible if selected
+# only visible if selected
+
+
 @app.callback(
     Output(component_id='info-container1', component_property='style'),
     Input('compare_with', 'value')
 )
 def show_regency_selector(compare_with):
-    if compare_with == '' or  compare_with == None:
+    if compare_with == '' or compare_with == None:
         return {'display': 'none'}
-    else :
+    else:
         return {'display': 'flex', 'flex-direction': 'row'}
 
+
 @app.callback(
-    [
-        Output("compare_info_box", "children"),
+    [Output("compare_info_box", "children"),
         Output("compare_cases_mortality", "children"),
         Output('compare_cases_per_100k', 'children'),
         Output('compare_deaths_per_100k', 'children'),
-        Output('compare_growth_rate', 'children')],
+        Output('compare_growth_rate', 'children'),
+        Output('compare_male_smokers', 'children'),
+        Output('compare_stringency_index', 'children'),
+        Output('compare_median_age', 'children'),
+     ],
     [
         Input('compare_with', 'value'),
     ],
@@ -550,8 +598,11 @@ def update_mini_containers1(compare_with):
         fill_method='ffill', periods=7)
     growth_rate = selected_region['growth_rate_new_cases'].iloc[-1].round(2)
 
-    return '{} {}'.format(str(date), compare_with), '{}'.format(str(round(cfr, 2))), '{}'.format(str(round(cp100k, 2))), '{}'.format(str(round(dp100k, 2))), '{}'.format(str(growth_rate) + '%')
+    median_age = selected_region['median_age'].iloc[-1]
+    stringency = selected_region['stringency_index'].iloc[-1]
+    male_smokers = selected_region['male_smokers'].iloc[-1]
 
+    return '{} {}'.format(str(date), compare_with), '{}'.format(str(round(cfr, 2))), '{}'.format(str(round(cp100k, 2))),    '{}'.format(str(round(dp100k, 2))),    '{}'.format(str(growth_rate) + '%'),    '{}'.format(str(male_smokers)), '{}'.format(str(stringency)), '{}'.format(str(median_age))
 ##################################
 # Selectors -> time series graph
 ###################################
@@ -724,15 +775,14 @@ def make_main_figure(region, case_type, main_graph_layout, ):
 def make_regency_info_fig(region, case_type):
     if region == 'indo':
         df = pd.read_csv(data_covid_indo)
-        region_selected = 'indonesia'
+        region_selected = 'Indonesia'
 
     elif region == 'bali':
         df = pd.read_csv(data_covid_bali)
         region_selected = 'bali'
 
     if case_type == "total_cases_per_100k":
-        c_type = ['new_cases',
-                  'total_treatment', 'total_cases_per_100k']
+        c_type = ['new_cases', 'total_cases_per_100k']
     elif case_type == 'total_deaths_per_100k':
         c_type = ['new_deaths', 'total_deaths_per_100k']
     else:

@@ -74,13 +74,13 @@ def zoom_center(lons: tuple=None, lats: tuple=None, lonlats: tuple=None,
     return zoom, center
     
 REGENCIES = dict(
-    JEM = 'jembrana',
-    BAD = 'badung',
-    DEN = 'denpasar',
-    BUL = 'buleleng',
-    KLU = 'klungkung',
-    TAB = 'tabanan',
-    GIA = 'gianyar',
-    KAR = 'karangasem',
-    BAN = 'bangli',
+    JEM = 'Jembrana',
+    BAD = 'Badung',
+    DEN = 'Denpasar',
+    BUL = 'Buleleng',
+    KLU = 'Klungkung',
+    TAB = 'Tabanan',
+    GIA = 'Gianyar',
+    KAR = 'Karangasem',
+    BAN = 'Bangli',
     )
