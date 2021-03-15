@@ -272,14 +272,14 @@ app.layout = html.Div(
                     className="mini_container",
                 ),
 
-                html.Div(
-                    [
-                        html.P("Fun_Facts", style={'text-align': 'center'}),
+                # html.Div(
+                #     [
+                #         html.P("Fun_Facts", style={'text-align': 'center'}),
 
-                    ],
-                    id="fun_facts1",
-                    className="mini_container",
-                ),
+                #     ],
+                #     id="fun_facts1",
+                #     className="mini_container",
+                # ),
             ],
             id="info-container",
             className="row container-display thirteen columns",
@@ -329,27 +329,27 @@ app.layout = html.Div(
                     id="compare_growth_rate1",  # originally id='water' -> change in .css file
                     className="mini_container",
                 ),
-                html.Div(
-                    [
-                        html.P("Fun_Facts", style={'text-align': 'center'}),
+                # html.Div(
+                #     [
+                #         html.P("Fun_Facts", style={'text-align': 'center'}),
 
-                        html.P("Male Smokers", style={'text_align': 'left'}),
-                        html.H6(id="compare_male_smokers",
-                                style={'text-align': 'center'}),
-                        html.P("Stringency Index", style={
-                               'text_align': 'left'}),
-                        html.H6(id="compare_stringency_index",
-                                style={'text-align': 'center'}),
-                        html.P("Median Age", style={'text_align': 'left'}),
-                        html.H6(id="compare_median_age", style={
-                                'text-align': 'center'}),
-                        # Fun data: ‘Male_smokers’, hospital_beths_per_thousands, median_age, stringency_index, people_fully_vaccinated
-                        # Positivity_rate, test_per_cases
+                #         html.P("Male Smokers", style={'text_align': 'left'}),
+                #         html.H6(id="compare_male_smokers",
+                #                 style={'text-align': 'center'}),
+                #         html.P("Stringency Index", style={
+                #                'text_align': 'left'}),
+                #         html.H6(id="compare_stringency_index",
+                #                 style={'text-align': 'center'}),
+                #         html.P("Median Age", style={'text_align': 'left'}),
+                #         html.H6(id="compare_median_age", style={
+                #                 'text-align': 'center'}),
+                #         # Fun data: ‘Male_smokers’, hospital_beths_per_thousands, median_age, stringency_index, people_fully_vaccinated
+                #         # Positivity_rate, test_per_cases
 
-                    ],
-                    id="compare_fun_facts1",
-                    className="mini_container",
-                ),
+                #     ],
+                #     id="compare_fun_facts1",
+                #     className="mini_container",
+                # ),
             ],
             id="info-container1",
             className="row container-display thirteen columns",
@@ -530,7 +530,7 @@ def update_mini_containers1(regency, region):
     if region == 'indo':
         df = pd.read_csv(data_world)
         selected_region = df[df['location'].str.match('Indonesia')]
-        region_selected = 'Indonesia'
+        region_select = 'Indonesia'
 
     elif region == 'bali' and regency == '' or regency == None:
         df = pd.read_csv(data_covid_indo)
@@ -576,9 +576,9 @@ def show_regency_selector(compare_with):
         Output('compare_cases_per_100k', 'children'),
         Output('compare_deaths_per_100k', 'children'),
         Output('compare_growth_rate', 'children'),
-        Output('compare_male_smokers', 'children'),
-        Output('compare_stringency_index', 'children'),
-        Output('compare_median_age', 'children'),
+        # Output('compare_male_smokers', 'children'),
+        # Output('compare_stringency_index', 'children'),
+        # Output('compare_median_age', 'children'),
      ],
     [
         Input('compare_with', 'value'),
@@ -602,7 +602,7 @@ def update_mini_containers1(compare_with):
     stringency = selected_region['stringency_index'].iloc[-1]
     male_smokers = selected_region['male_smokers'].iloc[-1]
 
-    return '{} {}'.format(str(date), compare_with), '{}'.format(str(round(cfr, 2))), '{}'.format(str(round(cp100k, 2))),    '{}'.format(str(round(dp100k, 2))),    '{}'.format(str(growth_rate) + '%'),    '{}'.format(str(male_smokers)), '{}'.format(str(stringency)), '{}'.format(str(median_age))
+    return '{} {}'.format(str(date), compare_with), '{}'.format(str(round(cfr, 2))), '{}'.format(str(round(cp100k, 2))),    '{}'.format(str(round(dp100k, 2))),    '{}'.format(str(growth_rate) + '%') #, '{}'.format(str(male_smokers)), '{}'.format(str(stringency)), '{}'.format(str(median_age))
 ##################################
 # Selectors -> time series graph
 ###################################
