@@ -197,6 +197,135 @@ body {
   color: rgb(50, 50, 50);
 }
 
+
+.pretty_container {
+  border-radius: 5px;
+  background-color: #F9F9F9;
+  margin: 10px;
+  padding: 15px;
+  position: relative;
+  box-shadow: 2px 2px 2px lightgrey;
+}
+
+.bare_container {
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+}
+
+.data_text {
+    font-size;
+}
+
+.dcc_control {
+  margin: 0;
+  padding: 5px;
+  width: calc(100%-40px);
+}
+
+.control_label {
+  margin: 0;
+  padding: 10px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  width: calc(100%-40px);
+}
+
+.rc-slider {
+  margin-left: 0px;
+  padding-left: 0px;
+}
+
+.row {
+  display: flex;
+}
+
+#individual_graph,
+#aggregate_graph {
+  width: calc(100% - 30px);
+  position: absolute;
+}
+
+#count_graph {
+  position: absolute;
+  height: calc(100% - 30px);
+  width: calc(100% - 30px);
+}
+#count_graph2 {
+  position: absolute;
+  height: calc(100% - 30px);
+  width: calc(100% - 30px);
+}
+
+#countGraphContainer {
+  flex: 5;
+  position: relative;
+}
+#countGraphContainer2 {
+  flex: 5;
+  position: relative;
+}
+
+#header {
+  align-items: center;
+}
+
+#learnMore {
+  align: center;
+  justify: middle;
+  height: 100%;
+}
+
+#rightCol {
+  display: flex;
+  flex-direction: column;
+}
+
+#info_box1 {
+  flex: 1;
+}
+#cfr {
+  flex: 1;
+  margin-right: 0;
+  padding-right: 0;
+}
+#gas {
+  margin-left: 0;
+  padding-left: 0;
+  margin-right: 0;
+  padding-right: 0;
+  flex: 1;
+}
+
+#aggregate_data {
+  align-items: center;
+}
+
+#oil {
+  margin-right: 0;
+  padding-right: 0;
+  margin-left: 0;
+  padding-left: 0;
+  flex:1;
+}
+
+#water {
+  margin-left: 0;
+  padding-left: 0;
+  flex: 1;
+}
+
+#tripleContainer {
+  display: flex;
+  flex: 4;
+}
+
+#mainContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
 /* Typography
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 h1,
@@ -502,6 +631,11 @@ hr {
   margin-bottom: 3.5rem;
   border-width: 0;
   border-top: 1px solid #e1e1e1;
+}
+
+#rightCol {
+  display: flex;
+  flex-direction: column;
 }
 
 /* Clearing

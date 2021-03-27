@@ -136,67 +136,146 @@ app.layout = html.Div(
             className="row flex-display",
             style={"margin-bottom": "10px"},
         ),
-        # Control bar
-        # ------------------------------
-        html.Div([
-            html.Div([
 
-                html.Div([
-                    html.P("Region:", className='control_label'),
-                    dcc.RadioItems(
-                        id='region_selector',
-                        options=[
-                            {'label': 'Indonesia', 'value': 'indo'},
-                            {'label': 'Bali', 'value': 'bali'},
-                        ],
-                        labelStyle={"display": "inline-block"},
-                        value="bali",
-                        className="dcc_control",),
-                ],
-                    style={'display': 'inline-block'},
-                    id='region_selector_div',
+        # #############################################
+        # Row with Selector and 2-rows on right side
+        # ##############################################
+
+        html.Div(
+            [
+                html.Div(
+                    [
+                        html.P("Chooose a Region:", className='control_label'),
+                        dcc.RadioItems(
+                            id='region_selector',
+                            options=[
+                                {'label': 'Indonesia', 'value': 'indo'},
+                                {'label': 'Bali', 'value': 'bali'},
+                            ],
+                            labelStyle={"display": "inline-block"},
+                            value="bali",
+                            className="dcc_control",),
+                        html.Div(
+                            [
+                                html.P("Regency/County:",
+                                       className="control_label"
+                                       ),
+                                dcc.Dropdown(
+                                    id="regency_selector",
+                                    options=regency_options,
+                                    multi=False,
+                                    value='',
+                                    className="dcc_control",
+                                ),
+                            ],
+                            id="regency_selector_div",
+                            # className= "dcc_control" ,
+                        ),
+                        html.P("Compare data with:",
+                               className='control_label'),
+                        dcc.Dropdown(
+                            id='compare_with',
+                            options=[
+                                {'label': 'World', 'value': 'World'},
+                                {'label': 'Indonesia', 'value': 'Indonesia'},
+                                {'label': 'Australia', 'value': 'Australia'},
+                                {'label': 'Germany', 'value': 'Germany'},
+                                {'label': 'United Kingdom',
+                                    'value': 'United Kingdom'},
+                                {'label': 'Italy', 'value': 'Italy'},
+                            ],
+                            multi=False,
+                            value='',
+                            className='dcc_control'
+                        ),
+                    ],
+                    className="pretty_container two columns"
                 ),
-                html.Div([
-                    html.P("Regency/County:",
-                           className="control_label"),
-                    dcc.Dropdown(
-                        id="regency_selector",
-                        options=regency_options,
-                        multi=False,
-                        value='',
-                        className="dcc_control",
-                    ),
-                ],
-                    style={'display': 'inline-block'},
-                    id='regency_selector_div'),
-                html.Div([
-                    html.P("Compare data with:", className='control_label'),
-                    dcc.Dropdown(
-                        id='compare_with',
-                        options=[
-                            {'label': 'World', 'value': 'World'},
-                            {'label': 'Indonesia', 'value': 'Indonesia'},
-                            {'label': 'Australia', 'value': 'Australia'},
-                            {'label': 'Germany', 'value': 'Germany'},
-                            {'label': 'United Kingdom', 'value': 'United Kingdom'},
-                            {'label': 'Italy', 'value': 'Italy'},
-                        ],
-                        multi=False,
-                        value='',
-                        className='dcc_control'
-                    ),
-                ],
-                    style={'display': 'inline-block'},
-                    id='compare_div'
-                ),
+                html.Div(
+                    [
+                        html.Div(
+                            [
+                                html.Div(
+                                    [
+                                        html.P(id="info_box_paragraph",
+                                               ),
+                                        html.H6(
+                                            id="info_box",
+                                            className='info_text'),
+                                    ],
+                                    id="info_box1",
+                                    className="pretty_container",
+                                ),
+                                html.Div(
+                                    [
+                                        html.Div(
+                                            [
+                                                html.P("Case Fatality Rate",
+                                                       style={'text-align': 'center'}),
+                                                html.H6(
+                                                    id="cases_mortality",
+                                                    style={'text-align': 'center'}),
+                                            ],
+                                            id="cfr",
+                                            className="pretty_container",
+                                        ),
+                                        html.Div(
+                                            [
+                                                html.P("cases per 100k", style={
+                                                    'text-align': 'center'}),
+                                                html.H6(id="cases_per_100k", style={
+                                                    'text-align': 'center'})
+                                            ],
+
+                                            id="gas",
+                                            className="pretty_container",
+                                        ),
+                                        html.Div(
+                                            [
+                                                html.P("deaths per 100k", style={
+                                                    'text-align': 'center'}),
+                                                html.H6(id="deaths_per_100k", style={
+                                                    'text-align': 'center'}),
+                                            ],
+                                            id="oil",
+                                            className="pretty_container",
+                                        ),
+                                        html.Div(
+                                            [
+                                                html.P("Growth-Rate",
+                                                       style={'text-align': 'center'}),
+                                                html.H6(id="growth_rate", style={
+                                                    'text-align': 'center'}),
+                                            ],
+                                            id="water",
+                                            className="pretty_container",
+                                        ),
+                                    ],
+                                    id="tripleContainer",
+                                )
+
+                            ],
+                            id="infoContainer",
+                            className="row"
+                        ),
+                        html.Div(
+                            [
+                                dcc.Graph(
+                                    id='count_graph',
+                                )
+                            ],
+                            id="countGraphContainer",
+                            style={"minHeight": "50vh"},
+                            className="pretty_container"
+                        )
+                    ],
+                    id="rightCol",
+                    className="ten columns"
+                )
             ],
-                className='pretty_container thirteen columns',
-                # style={'display': 'inline-block'},
-            )
-        ],
-            id='new_controls',
-            className="row",
+            className="row"
         ),
+
         # # Controls Panel Component
         # # ------------------------------
 
@@ -212,78 +291,6 @@ app.layout = html.Div(
         #             className="dcc_control",
         #         ),
 
-        # Mini Container Row 1
-        # -----------------------
-        html.Div(
-            [
-                html.Div(
-                    [
-                        html.P(id="info_box_paragraph",
-                               style={'text-align': 'center'}),
-                        html.H6(
-                            id="info_box",
-                            style={'text-align': 'center'}),
-
-                    ],
-                    id="info_box1",
-                    className="mini_container",
-                ),
-                html.Div(
-                    [
-                        html.P("Case Fatality Rate",
-                               style={'text-align': 'center'}),
-                        html.H6(
-                            id="cases_mortality",
-                            style={'text-align': 'center'}),
-
-                    ],
-                    id="wells",
-                    className="mini_container",
-                ),
-                html.Div(
-                    [
-                        html.P("Total cases per 100k", style={
-                            'text-align': 'center'}),
-                        html.H6(id="cases_per_100k", style={
-                            'text-align': 'center'})
-                    ],
-
-                    id="gas",
-                    className="mini_container",
-                ),
-                html.Div(
-                    [
-                        html.P("Total deaths per 100k", style={
-                            'text-align': 'center'}),
-                        html.H6(id="deaths_per_100k", style={
-                            'text-align': 'center'}),
-                    ],
-                    id="oil",
-                    className="mini_container",
-                ),
-                html.Div(
-                    [
-                        html.P("Growth-Rate (new cases 7-day)",
-                               style={'text-align': 'center'}),
-                        html.H6(id="growth_rate", style={
-                            'text-align': 'center'}),
-                    ],
-                    id="water",
-                    className="mini_container",
-                ),
-
-                # html.Div(
-                #     [
-                #         html.P("Fun_Facts", style={'text-align': 'center'}),
-
-                #     ],
-                #     id="fun_facts1",
-                #     className="mini_container",
-                # ),
-            ],
-            id="info-container",
-            className="row container-display thirteen columns",
-        ),
         # Mini Container Row 2
         # -----------------------
         html.Div(
@@ -355,36 +362,6 @@ app.layout = html.Div(
             className="row container-display thirteen columns",
         ),
 
-        # Graph Component
-        # --------------------
-        html.Div([
-            html.Div(
-                [dcc.Graph(id="count_graph")],
-                id="countGraphContainer",
-                style={"minHeight": "70vh"},
-                className="pretty_container nine columns",
-            ),
-            html.Div(
-                [
-                    html.Div(
-                        html.Img(
-                            src=app.get_asset_url('pic1.jpg'),
-                            style={
-                                'max-width': '100%',
-                                'max-height': '100%',
-                                #    'background-size': 'cover',
-                            }))
-                ],
-                className="pretty_container four columns",
-            ),
-
-        ],
-            id="graph-container",
-
-            className="row flex-display",
-            # className="row container-display",
-        ),
-
         # Control Bar 2
         # --------------------
         html.Div([
@@ -411,7 +388,7 @@ app.layout = html.Div(
             className="row flex-display",
         ),
 
-        # Choropleth Map
+        # Choropleth Map and Comparison of Region
         # --------------------
         html.Div(
             [
@@ -433,6 +410,37 @@ app.layout = html.Div(
             ],
             className="row flex-display",
         ),
+        
+        # Vaccination Graph Component
+        # --------------------
+        html.Div([
+            html.Div(
+                [dcc.Graph(id="count_graph2")],
+                id="countGraphContainer2",
+                style={"minHeight": "70vh"},
+                className="pretty_container nine columns",
+            ),
+            html.Div(
+                [
+                    html.Div(
+                        html.Img(
+                            src=app.get_asset_url('pic1.jpg'),
+                            style={
+                                'max-width': '100%',
+                                'max-height': '100%',
+                                #    'background-size': 'cover',
+                            }))
+                ],
+                className="pretty_container four columns",
+            ),
+
+        ],
+            id="graph-container",
+
+            className="row flex-display",
+            # className="row container-display",
+        ),
+
 
         # Footer Component
         # ------------------------------
@@ -525,7 +533,7 @@ def show_regency_selector(region):
 
 )
 def update_mini_containers1(regency, region):
-    # print(regency)
+    print(regency + " infocontainer")
     # print(region)
     if region == 'indo':
         df = pd.read_csv(data_world)
@@ -538,7 +546,7 @@ def update_mini_containers1(regency, region):
         region_select = "Bali"
     else:
         df = pd.read_csv(data_covid_bali)
-        selected_region = df[df['Name_EN'].str.match((regency.lower()))]
+        selected_region = df[df['Name_EN'].str.match((regency.capitalize()))]
         region_select = 'Bali ' + regency
 
     date = selected_region["Date"].iloc[-1]
@@ -602,7 +610,8 @@ def update_mini_containers1(compare_with):
     stringency = selected_region['stringency_index'].iloc[-1]
     male_smokers = selected_region['male_smokers'].iloc[-1]
 
-    return '{} {}'.format(str(date), compare_with), '{}'.format(str(round(cfr, 2))), '{}'.format(str(round(cp100k, 2))),    '{}'.format(str(round(dp100k, 2))),    '{}'.format(str(growth_rate) + '%') #, '{}'.format(str(male_smokers)), '{}'.format(str(stringency)), '{}'.format(str(median_age))
+    # , '{}'.format(str(male_smokers)), '{}'.format(str(stringency)), '{}'.format(str(median_age))
+    return '{} {}'.format(str(date), compare_with), '{}'.format(str(round(cfr, 2))), '{}'.format(str(round(cp100k, 2))),    '{}'.format(str(round(dp100k, 2))),    '{}'.format(str(growth_rate) + '%')
 ##################################
 # Selectors -> time series graph
 ###################################
@@ -738,7 +747,7 @@ def make_main_figure(region, case_type, main_graph_layout, ):
         color=case_type,
         mapbox_style='carto-positron',
         hover_name='Name_EN',
-        hover_data=['CFR'],
+        hover_data=['CFR', "new_cases", "new_deaths", "growth_rate_new_cases"],
         # animation_frame="Date",
         color_continuous_scale='blues',
         zoom=zoom,
@@ -782,11 +791,11 @@ def make_regency_info_fig(region, case_type):
         region_selected = 'bali'
 
     if case_type == "total_cases_per_100k":
-        c_type = ['new_cases', 'total_cases_per_100k']
+        c_type = ['new_cases']
     elif case_type == 'total_deaths_per_100k':
-        c_type = ['new_deaths', 'total_deaths_per_100k']
+        c_type = ['new_deaths']
     else:
-        c_type = ['new_recovered', 'total_recovered']
+        c_type = ['new_recovered']
     # get latest date
     # display per regency, new daily cases (Bar) and cases7 (Line)
     df_latest = df.sort_values(by=['Date'], ascending=False).head(10)
@@ -803,13 +812,15 @@ def make_regency_info_fig(region, case_type):
             name=c_type[0],
             marker_color=colors[4]
         ))
-    fig.add_trace(
-        go.Bar(
-            x=regions,
-            y=df_latest[c_type[1]],
-            name=c_type[1],
-            marker_color=colors[6]
-        ))
+        ## Compare or Add different Metric 
+        ###################################
+    # fig.add_trace(
+    #     go.Bar(
+    #         x=regions,
+    #         y=df_latest[c_type[1]],
+    #         name=c_type[1],
+    #         marker_color=colors[6]
+    #     ))
 
     fig.update_layout(
         # title='{}'.format(df_latest['Date'].iloc(1)),

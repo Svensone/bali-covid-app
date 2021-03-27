@@ -120,29 +120,12 @@ body {
   box-shadow: 2px 2px 2px lightgrey;
 }
 
-#right-column {
+#rightColumn {
   display: flex;
   flex-direction: column;
 }
-/* Old ids - Mini Info Container Elements */
-#wells {
-  flex: 1;
-}
 
-#gas {
-  flex: 1;
-}
 
-#oil {
-  flex: 1;
-}
-
-#water {
-  flex: 1;
-}
-#info_box1 {
-  flex: 1;
-}
 
 /* Mini Info Container "Compare" 2 */
 
