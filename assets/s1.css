@@ -280,6 +280,7 @@ body {
   flex-direction: column;
 }
 
+
 #info_box1 {
   flex: 1;
 }
@@ -288,7 +289,7 @@ body {
   margin-right: 0;
   padding-right: 0;
 }
-#gas {
+#cp100k {
   margin-left: 0;
   padding-left: 0;
   margin-right: 0;
@@ -300,7 +301,7 @@ body {
   align-items: center;
 }
 
-#oil {
+#dp100k {
   margin-right: 0;
   padding-right: 0;
   margin-left: 0;
@@ -308,13 +309,53 @@ body {
   flex:1;
 }
 
-#water {
+#g_rate {
   margin-left: 0;
   padding-left: 0;
   flex: 1;
 }
 
 #tripleContainer {
+  display: flex;
+  flex: 4;
+}
+
+
+#info_box2 {
+  flex: 1;
+}
+#cfr2 {
+  flex: 1;
+  margin-right: 0;
+  padding-right: 0;
+}
+#cp100k2 {
+  margin-left: 0;
+  padding-left: 0;
+  margin-right: 0;
+  padding-right: 0;
+  flex: 1;
+}
+
+#aggregate_data {
+  align-items: center;
+}
+
+#dp100k2 {
+  margin-right: 0;
+  padding-right: 0;
+  margin-left: 0;
+  padding-left: 0;
+  flex:1;
+}
+
+#g_rate {
+  margin-left: 0;
+  padding-left: 0;
+  flex: 1;
+}
+
+#tripleContainer2 {
   display: flex;
   flex: 4;
 }

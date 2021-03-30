@@ -98,7 +98,7 @@ app.layout = html.Div(
                             src=app.get_asset_url("Barong-Mask.png"),
                             id="plotly-image",
                             style={
-                                "height": "80px",
+                                "height": "90px",
                                 "width": "auto", },
                         )
                     ],
@@ -121,7 +121,7 @@ app.layout = html.Div(
                 html.Div(
                     [
                         html.Img(
-                            src=app.get_asset_url("frangi.png"),
+                            src=app.get_asset_url("Barong-Mask.png"),
                             id="header-image",
                             style={
                                 "height": "90px",
@@ -140,9 +140,10 @@ app.layout = html.Div(
         # #############################################
         # Row with Selector and 2-rows on right side
         # ##############################################
-
         html.Div(
             [
+                # Left Side Control Panel
+                # #######################
                 html.Div(
                     [
                         html.P("Chooose a Region:", className='control_label'),
@@ -169,7 +170,7 @@ app.layout = html.Div(
                                 ),
                             ],
                             id="regency_selector_div",
-                            # className= "dcc_control" ,
+                            className= "dcc_control" ,
                         ),
                         html.P("Compare data with:",
                                className='control_label'),
@@ -180,32 +181,41 @@ app.layout = html.Div(
                                 {'label': 'Indonesia', 'value': 'Indonesia'},
                                 {'label': 'Australia', 'value': 'Australia'},
                                 {'label': 'Germany', 'value': 'Germany'},
-                                {'label': 'United Kingdom',
-                                    'value': 'United Kingdom'},
+                                {'label': 'United Kingdom','value': 'United Kingdom'},
                                 {'label': 'Italy', 'value': 'Italy'},
                             ],
                             multi=False,
-                            value='',
-                            className='dcc_control'
+                            value='Indonesia',
+                            className='dcc_control info_text'
                         ),
                     ],
                     className="pretty_container two columns"
                 ),
+
+                # Right Side
+                # #######################
                 html.Div(
                     [
+                        # Info Boxes 1
+                        ###############
                         html.Div(
                             [
                                 html.Div(
                                     [
-                                        html.P(id="info_box_paragraph",
-                                               ),
+                                        html.P(id="info_box_paragraph",className='info_text' ),
                                         html.H6(
                                             id="info_box",
+                                            className='info_text'),
+
+                                        html.H6(
+                                            id="info_box2",
                                             className='info_text'),
                                     ],
                                     id="info_box1",
                                     className="pretty_container",
                                 ),
+                                # Triple Container
+                                ##############
                                 html.Div(
                                     [
                                         html.Div(
@@ -215,6 +225,11 @@ app.layout = html.Div(
                                                 html.H6(
                                                     id="cases_mortality",
                                                     style={'text-align': 'center'}),
+                                                html.H6(
+                                                    id="compare_cases_mortality",
+                                                    style={'text-align': 'center'}),
+                                                #
+
                                             ],
                                             id="cfr",
                                             className="pretty_container",
@@ -224,10 +239,12 @@ app.layout = html.Div(
                                                 html.P("cases per 100k", style={
                                                     'text-align': 'center'}),
                                                 html.H6(id="cases_per_100k", style={
-                                                    'text-align': 'center'})
+                                                    'text-align': 'center'}),
+                                                html.H6(id="compare_cases_per_100k",
+                                                        style={'text-align': 'center'})
                                             ],
 
-                                            id="gas",
+                                            id="cp100k",
                                             className="pretty_container",
                                         ),
                                         html.Div(
@@ -236,28 +253,34 @@ app.layout = html.Div(
                                                     'text-align': 'center'}),
                                                 html.H6(id="deaths_per_100k", style={
                                                     'text-align': 'center'}),
+                                                html.H6(id="compare_deaths_per_100k", style={
+                                                    'text-align': 'center'}),
                                             ],
-                                            id="oil",
+                                            id="dp100k",
                                             className="pretty_container",
                                         ),
                                         html.Div(
                                             [
-                                                html.P("Growth-Rate",
-                                                       style={'text-align': 'center'}),
+                                                html.P(
+                                                    "Growth-Rate", style={'text-align': 'center'}),
                                                 html.H6(id="growth_rate", style={
                                                     'text-align': 'center'}),
+                                                html.H6(id="compare_growth_rate", style={
+                                                        'text-align': 'center'}),
                                             ],
-                                            id="water",
+                                            id="g_rate",
                                             className="pretty_container",
                                         ),
                                     ],
                                     id="tripleContainer",
                                 )
-
                             ],
                             id="infoContainer",
                             className="row"
                         ),
+                        
+                        # Graph Time Series right Side
+                        ##############
                         html.Div(
                             [
                                 dcc.Graph(
@@ -274,92 +297,6 @@ app.layout = html.Div(
                 )
             ],
             className="row"
-        ),
-
-        # # Controls Panel Component
-        # # ------------------------------
-
-        #         html.P('NOT YET !!', className="control_label",),
-        #         html.P("Date or Timerange:",
-        #                className="control_label",
-        #                ),
-        #         dcc.RangeSlider(
-        #             id="year_slider",
-        #             min=1960,
-        #             max=2017,
-        #             value=[1990, 2010],
-        #             className="dcc_control",
-        #         ),
-
-        # Mini Container Row 2
-        # -----------------------
-        html.Div(
-            [
-                html.Div(
-                    [html.H6(
-                        id="compare_info_box",
-                        style={'text-align': 'center'}),
-                     ],
-                    id="compare_info_box1",
-                    className="mini_container",
-                ),
-                html.Div(
-                    [
-                        html.H6(
-                            id="compare_cases_mortality",
-                            style={'text-align': 'center'}),
-                    ],
-                    id="compare_cases_mortality1",
-                    className="mini_container",
-                ),
-                html.Div(
-                    [
-                        html.H6(id="compare_cases_per_100k", style={
-                            'text-align': 'center'})
-                    ],
-                    id="compare_cases_per_100k1",
-                    className="mini_container",
-                ),
-                html.Div(
-                    [
-                        html.H6(id="compare_deaths_per_100k", style={
-                            'text-align': 'center'}),
-                    ],
-                    id="compare_deaths_per_100k1",
-                    className="mini_container",
-                ),
-                html.Div(
-                    [
-                        html.H6(id="compare_growth_rate", style={
-                            'text-align': 'center'}),
-                    ],
-                    id="compare_growth_rate1",  # originally id='water' -> change in .css file
-                    className="mini_container",
-                ),
-                # html.Div(
-                #     [
-                #         html.P("Fun_Facts", style={'text-align': 'center'}),
-
-                #         html.P("Male Smokers", style={'text_align': 'left'}),
-                #         html.H6(id="compare_male_smokers",
-                #                 style={'text-align': 'center'}),
-                #         html.P("Stringency Index", style={
-                #                'text_align': 'left'}),
-                #         html.H6(id="compare_stringency_index",
-                #                 style={'text-align': 'center'}),
-                #         html.P("Median Age", style={'text_align': 'left'}),
-                #         html.H6(id="compare_median_age", style={
-                #                 'text-align': 'center'}),
-                #         # Fun data: ‘Male_smokers’, hospital_beths_per_thousands, median_age, stringency_index, people_fully_vaccinated
-                #         # Positivity_rate, test_per_cases
-
-                #     ],
-                #     id="compare_fun_facts1",
-                #     className="mini_container",
-                # ),
-            ],
-            id="info-container1",
-            className="row container-display thirteen columns",
         ),
 
         # Control Bar 2
@@ -410,12 +347,12 @@ app.layout = html.Div(
             ],
             className="row flex-display",
         ),
-        
+        # --------------------
         # Vaccination Graph Component
         # --------------------
         html.Div([
             html.Div(
-                [dcc.Graph(id="count_graph2")],
+                [dcc.Graph(id="vacc_graph")],
                 id="countGraphContainer2",
                 style={"minHeight": "70vh"},
                 className="pretty_container nine columns",
@@ -433,15 +370,10 @@ app.layout = html.Div(
                 ],
                 className="pretty_container four columns",
             ),
-
         ],
             id="graph-container",
-
             className="row flex-display",
-            # className="row container-display",
         ),
-
-
         # Footer Component
         # ------------------------------
         html.Div(
@@ -464,8 +396,16 @@ app.layout = html.Div(
                             [
                                 html.H6("Sources", style={
                                         "margin-bottom": "0px"},),
-                                html.P(["Bali: https://infocorona.baliprov.go.id/", html.Br(), "Indonesia: https://www.kaggle.com/hendratno/covid19-indonesia"],
+                                html.P(["Code : https://github.com/Svensone/bali-covid-app"],
                                        style={"margin-top": "5px", "margin-left": "20px"}),
+                                html.P([
+                                    "Bali: https://infocorona.baliprov.go.id/",
+                                    html.Br(),
+                                    "Indonesia: https://www.kaggle.com/hendratno/covid19-indonesia",
+                                    html.Br(),
+                                    "World: ",
+                                ],
+                                    style={"margin-top": "5px", "margin-left": "20px"}),
                             ]
                         )
                     ],
@@ -499,6 +439,7 @@ app.clientside_callback(
     Output("output-clientside", "children"),
     [Input("count_graph", "figure")],
 )
+
 #######################################
 # Region Selector -> show Regency Option
 #######################################
@@ -513,10 +454,11 @@ def show_regency_selector(region):
         return {'display': 'inline-block'}  # , 'flex-direction': 'row'
     if region == 'indo':
         return {'display': 'none'}
+
+
 #######################################
 # Selector -> Mini-Container Numbers
 ######################################
-
 
 @app.callback(
     [
@@ -525,16 +467,27 @@ def show_regency_selector(region):
         Output("cases_mortality", "children"),
         Output('cases_per_100k', 'children'),
         Output('deaths_per_100k', 'children'),
-        Output('growth_rate', 'children')
+        Output('growth_rate', 'children'),
+        # ouputs for Comparison row
+        Output("info_box2", "children"),
+        Output("compare_cases_mortality", "children"),
+        Output('compare_cases_per_100k', 'children'),
+        Output('compare_deaths_per_100k', 'children'),
+        Output('compare_growth_rate', 'children'),
     ],
 
     [Input('regency_selector', 'value'),
-     Input('region_selector', 'value')],
+     Input('region_selector', 'value'),
+     Input('compare_with', 'value'),
+     ],
 
 )
-def update_mini_containers1(regency, region):
+def update_mini_containers1(regency, region, compare_with):
     print(regency + " infocontainer")
     # print(region)
+
+    # first row info containers
+    ############################
     if region == 'indo':
         df = pd.read_csv(data_world)
         selected_region = df[df['location'].str.match('Indonesia')]
@@ -559,72 +512,48 @@ def update_mini_containers1(regency, region):
 
     growth_rate = selected_region.loc[:,
                                       ('growth_rate_new_cases')].iloc[-1].round()
-    return '{}'.format(str(date)), '{}'.format(region_select), '{}'.format(str(round(cfr, 2))), '{}'.format(str(round(cp100k, 2))), '{}'.format(round(dp100k, 0)), '{}'.format(str(growth_rate) + '%')
+    # second row info containers
+    ############################
+    df2 = pd.read_csv(data_world)
+    selected_region2 = df2[df2['location'].str.match(str(compare_with))]
 
-#######################################
-# Selector -> Mini-Container Comparison
-#######################################
-# only visible if selected
-
-
-@app.callback(
-    Output(component_id='info-container1', component_property='style'),
-    Input('compare_with', 'value')
-)
-def show_regency_selector(compare_with):
-    if compare_with == '' or compare_with == None:
-        return {'display': 'none'}
-    else:
-        return {'display': 'flex', 'flex-direction': 'row'}
-
-
-@app.callback(
-    [Output("compare_info_box", "children"),
-        Output("compare_cases_mortality", "children"),
-        Output('compare_cases_per_100k', 'children'),
-        Output('compare_deaths_per_100k', 'children'),
-        Output('compare_growth_rate', 'children'),
-        # Output('compare_male_smokers', 'children'),
-        # Output('compare_stringency_index', 'children'),
-        # Output('compare_median_age', 'children'),
-     ],
-    [
-        Input('compare_with', 'value'),
-    ],
-)
-def update_mini_containers1(compare_with):
-    # print(compare_with)
-    df = pd.read_csv(data_world)
-    selected_region = df[df['location'].str.match(compare_with)]
-
-    date = selected_region["Date"].iloc[-1]
-    cfr = selected_region['CFR'].iloc[-1]
-    # cfr = cfr.apply(pd.to_numeric)  # .round(2)
-    cp100k = selected_region['total_cases_per_100k'].iloc[-1].round(2)
-    dp100k = selected_region['total_deaths_per_100k'].iloc[-1].round(2)
-    selected_region['growth_rate_new_cases'] = selected_region['new_cases'].pct_change(
+    date2 = selected_region2["Date"].iloc[-1]
+    cfr2 = selected_region2['CFR'].iloc[-1]
+    cp100k2 = selected_region2['total_cases_per_100k'].iloc[-1].round(2)
+    dp100k2 = selected_region2['total_deaths_per_100k'].iloc[-1].round(2)
+    selected_region2['growth_rate_new_cases'] = selected_region2['new_cases'].pct_change(
         fill_method='ffill', periods=7)
-    growth_rate = selected_region['growth_rate_new_cases'].iloc[-1].round(2)
+    growth_rate2 = selected_region2['growth_rate_new_cases'].iloc[-1].round(2)
 
-    median_age = selected_region['median_age'].iloc[-1]
-    stringency = selected_region['stringency_index'].iloc[-1]
-    male_smokers = selected_region['male_smokers'].iloc[-1]
+    return (
+        '{}'.format(str(date)),
+        '{}'.format(region_select),
+        '{}'.format(str(round(cfr, 2))),
+        '{}'.format(str(round(cp100k, 2))),
+        '{}'.format(round(dp100k, 0)),
+        '{}'.format(str(growth_rate) + '%'),
 
-    # , '{}'.format(str(male_smokers)), '{}'.format(str(stringency)), '{}'.format(str(median_age))
-    return '{} {}'.format(str(date), compare_with), '{}'.format(str(round(cfr, 2))), '{}'.format(str(round(cp100k, 2))),    '{}'.format(str(round(dp100k, 2))),    '{}'.format(str(growth_rate) + '%')
+        '{}'.format(str(compare_with)),
+        '{}'.format(str(round(cfr2, 2))),
+        '{}'.format(str(round(cp100k2, 2))),
+        '{}'.format(str(round(dp100k2, 2))),
+        '{}'.format(str(growth_rate2) + '%')
+    )
+
 ##################################
-# Selectors -> time series graph
+# Selectors -> time series graph (1.st Graph)
 ###################################
 
 
 @app.callback(
     Output("count_graph", "figure"),
-    [Input('region_selector', 'value'), Input(
-        'regency_selector', 'value')],)
+    [
+        Input('region_selector', 'value'),
+        Input('regency_selector', 'value')
+    ])
 def make_count_figure(region, regency):
-    print(region)
-    print(regency)
-
+    # print(region)
+    # print(regency)
     if region == 'indo':
         df = pd.read_csv(data_covid_indo)
         region_selected = 'indonesia'
@@ -636,11 +565,11 @@ def make_count_figure(region, regency):
         region_selected = str(regency)
 
     df = df[df['Name_EN'].str.match(region_selected)]
-
     df_test = df  # .tail(100)
     days = df_test.Date.to_list()
 
-    # fig = go.Figure()
+    # Bar Graph
+    #####################
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     selected_cases = ['new_cases', 'new_recovered']
     colors = px.colors.sequential.Blues
@@ -656,7 +585,9 @@ def make_count_figure(region, regency):
             ),
             secondary_y=False,
         )
-    # test plots for new cases and
+
+    # Line Plot
+    ###############
     count = 0
     selected_new = ['total_deaths_per_100k', 'CFR', ]
     for selected in selected_new:
@@ -673,26 +604,25 @@ def make_count_figure(region, regency):
 
         )
 
+    # Add Comparision Data
+    # ###########
+    # NOT YET !
+    #######################
+
     fig.update_layout(
-        title={
-            'text': 'Daily Cases in {}'.format(region_selected),
-            'y': 0.9,
-            'x': 0.5,
-            'xanchor': 'center',
-            'yanchor': 'top'},
-        xaxis_tickfont_size=6,
+        xaxis_tickfont_size=8,
         yaxis=dict(
-            tickfont_size=6,
+            tickfont_size=8,
         ),
-        plot_bgcolor=colors[0],
-        paper_bgcolor=colors[0],
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
         legend=dict(
             yanchor="top",
             y=0.99,
-            xanchor="left",
+            xanchor="center",
             x=0.01,
-            bgcolor='white',
-            bordercolor='white',
+            bgcolor='rgba(0,0,0,0)',
+            bordercolor='rgba(0,0,0,0)',
         ),
         barmode='group',
         bargap=0.15,  # gap between bars of adjacent location coordinates.
@@ -700,7 +630,7 @@ def make_count_figure(region, regency):
     )
 
     # Set x-axis title
-    fig.update_yaxes(tickfont_size=6, secondary_y=True)
+    fig.update_yaxes(tickfont_size=8, secondary_y=True)
 
     return fig
 
@@ -716,9 +646,6 @@ def make_count_figure(region, regency):
     [State("main_graph", "relayoutData")],
 )
 def make_main_figure(region, case_type, main_graph_layout, ):
-    # print(region)
-    # print(case_type)
-    # print(main_graph_layout)
 
     PATH = pathlib.Path(__file__).parent
 
@@ -727,13 +654,11 @@ def make_main_figure(region, case_type, main_graph_layout, ):
         geojson = json.load(open(geojson_bali))
         center = {"lat": -8.5002, "lon": 115.0129}
         zoom = 7
-
     elif region == 'indo':
         df = pd.read_csv(data_covid_indo)
         geojson = json.load(open(geojson_indo))
         center = {'lat': 0, 'lon': 109}
         zoom = 3
-
     else:
         df = pd.read_csv(data_covid_germany)
         geojson = json.load(open(geojson_germany))
@@ -747,7 +672,8 @@ def make_main_figure(region, case_type, main_graph_layout, ):
         color=case_type,
         mapbox_style='carto-positron',
         hover_name='Name_EN',
-        hover_data=['CFR', "new_cases", "new_deaths", "growth_rate_new_cases"],
+        hover_data=['CFR', "new_cases", "new_deaths",
+                    "growth_rate_new_cases", "Date"],
         # animation_frame="Date",
         color_continuous_scale='blues',
         zoom=zoom,
@@ -772,9 +698,10 @@ def make_main_figure(region, case_type, main_graph_layout, ):
     # figure = dict(data=traces, layout=layout)
     return display_fig
 
+
+#########################
 # Selectors  -> regency_info_bar Charts
-
-
+#########################
 @app.callback(
     Output('regency_info_graph', 'figure'),
     [
@@ -785,11 +712,9 @@ def make_regency_info_fig(region, case_type):
     if region == 'indo':
         df = pd.read_csv(data_covid_indo)
         region_selected = 'Indonesia'
-
     elif region == 'bali':
         df = pd.read_csv(data_covid_bali)
         region_selected = 'bali'
-
     if case_type == "total_cases_per_100k":
         c_type = ['new_cases']
     elif case_type == 'total_deaths_per_100k':
@@ -803,7 +728,6 @@ def make_regency_info_fig(region, case_type):
 
     # Make Graph
     colors = px.colors.sequential.Blues
-
     fig = go.Figure()
     fig.add_trace(
         go.Bar(
@@ -812,8 +736,8 @@ def make_regency_info_fig(region, case_type):
             name=c_type[0],
             marker_color=colors[4]
         ))
-        ## Compare or Add different Metric 
-        ###################################
+    # Compare or Add different Metric
+    ###################################
     # fig.add_trace(
     #     go.Bar(
     #         x=regions,
@@ -845,6 +769,84 @@ def make_regency_info_fig(region, case_type):
 
     # Set x-axis title
     # fig.update_yaxes(tickfont_size=6, secondary_y=True)
+
+    return fig
+
+##################################
+# Selectors -> Vaccination graph
+###################################
+
+
+@app.callback(
+    Output("vacc_graph", "figure"),
+    Input('compare_with', 'value')
+)
+def make_vacc_graph(compare_with):
+    print(compare_with)
+
+    df = pd.read_csv(data_world)
+
+    df_compare = df[df['location'].str.match(str(compare_with))].iloc[-100:]
+    df_indo = df[df['location'].str.match(str("Indonesia"))].iloc[-100:]
+
+    if compare_with == "Indonesia":
+        dfs = [df_indo]
+    else:
+        dfs = [df_indo, df_compare]
+
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+    colors = [px.colors.sequential.Blues[3], px.colors.sequential.Blues[8]]
+    names = ["Indonesia", compare_with]
+
+    for index, data in enumerate(dfs):
+        days = df_indo.Date.to_list()
+        fig.add_trace(go.Bar(
+            x=days,
+            y=data['new_vaccinations_smoothed_per_million'],
+            marker_color=colors[index],
+            name=str(names[index] + ': new vaccinations p.million')
+        ),
+            secondary_y=False,)
+        fig.add_trace(go.Scatter(
+            x=days,
+            y=data['people_fully_vaccinated_per_hundred'],
+            marker_color=colors[index],
+            name=(names[index] + ': fully vaccinated p.million')
+        ),
+            secondary_y=True)
+
+    fig.update_layout(
+        xaxis_tickfont_size=8,
+        yaxis=dict(
+            tickfont_size=8,
+        ),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        ),
+        # legend=dict(
+
+        #     yanchor="top",
+        #     y=0.99,
+        #     xanchor="center",
+        #     x=0.01,
+        #     bgcolor='rgba(0,0,0,0)',
+        #     bordercolor='rgba(0,0,0,0)',
+        # ),
+        barmode='group',
+        bargap=0.15,  # gap between bars of adjacent location coordinates.
+        bargroupgap=0.1  # gap between bars of the same location coordinate.
+    )
+
+    # Set x-axis title
+    fig.update_yaxes(tickfont_size=8, secondary_y=True)
 
     return fig
 

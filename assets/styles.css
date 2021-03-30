@@ -90,7 +90,7 @@ body {
 }
 #header-image2 {
   height: 100%;
-  padding: 0 20px;
+  /* padding: 0 px; */
   float: right;
 }
 #footer {
