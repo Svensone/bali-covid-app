@@ -156,24 +156,23 @@ app.layout = html.Div(
                             labelStyle={"display": "inline-block"},
                             value="bali",
                             className="dcc_control",),
+
                         html.Div(
                             [
-                                html.P("Regency/County:",
-                                       className="control_label"
-                                       ),
+                                html.P("Regency/County:",className="control_label info_text"),
                                 dcc.Dropdown(
                                     id="regency_selector",
                                     options=regency_options,
                                     multi=False,
                                     value='',
-                                    className="dcc_control",
+                                    className="dcc_control info_text",
                                 ),
                             ],
                             id="regency_selector_div",
-                            className= "dcc_control" ,
+                            # className= "dcc_control" ,
                         ),
-                        html.P("Compare data with:",
-                               className='control_label'),
+
+                        html.P("Compare data with:", className='control_label'),
                         dcc.Dropdown(
                             id='compare_with',
                             options=[
@@ -185,7 +184,7 @@ app.layout = html.Div(
                                 {'label': 'Italy', 'value': 'Italy'},
                             ],
                             multi=False,
-                            value='Indonesia',
+                            value='Germany',
                             className='dcc_control info_text'
                         ),
                     ],
@@ -221,7 +220,7 @@ app.layout = html.Div(
                                         html.Div(
                                             [
                                                 html.P("Case Fatality Rate",
-                                                       style={'text-align': 'center'}),
+                                                style={'text-align': 'center'}),
                                                 html.H6(
                                                     id="cases_mortality",
                                                     style={'text-align': 'center'}),
