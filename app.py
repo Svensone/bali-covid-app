@@ -53,7 +53,6 @@ server = app.server
 
 # Create controls
 # ---------------------
-
 # own controls for Bali_Covid Dash-App
 regency_options = [
     {'label': str(REGENCIES[x]), 'value': str(REGENCIES[x])} for x in REGENCIES
@@ -62,7 +61,6 @@ regency_options = [
 # Create global chart template
 # -----------------------------
 mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNrOWJqb2F4djBnMjEzbG50amg0dnJieG4ifQ.Zme1-Uzoi75IaFbieBDl3A"
-
 layout = dict(
     autosize=True,
     automargin=True,
@@ -118,19 +116,19 @@ app.layout = html.Div(
                     className="one-half column",
                     id="title",
                 ),
-                html.Div(
-                    [
-                        html.Img(
-                            src=app.get_asset_url("Barong-Mask.png"),
-                            id="header-image",
-                            style={
-                                "height": "90px",
-                                "width": "auto", },
-                        ),
-                    ],
-                    className="one column",
-                    id="header-image2",
-                ),
+                # html.Div(
+                #     [
+                #         html.Img(
+                #             src=app.get_asset_url("Barong-Mask.png"),
+                #             id="header-image",
+                #             style={
+                #                 "height": "90px",
+                #                 "width": "auto", },
+                #         ),
+                #     ],
+                #     className="one column",
+                #     id="header-image2",
+                # ),
             ],
             id="header",
             className="row flex-display",
@@ -494,7 +492,7 @@ def update_mini_containers1(regency, region, compare_with):
 
     elif region == 'bali' and regency == '' or regency == None:
         df = pd.read_csv(data_covid_indo)
-        selected_region = df[df['Name_EN'].str.match('bali')]
+        selected_region = df[df['Province'].str.match('Bali')]
         region_select = "Bali"
     else:
         df = pd.read_csv(data_covid_bali)
@@ -509,13 +507,11 @@ def update_mini_containers1(regency, region, compare_with):
     selected_region['growth_rate_new_cases'] = selected_region['new_cases'].pct_change(
         fill_method='ffill', periods=7)
 
-    growth_rate = selected_region.loc[:,
-                                      ('growth_rate_new_cases')].iloc[-1].round()
+    growth_rate = selected_region.loc[:, ('growth_rate_new_cases')].iloc[-1].round()
     # second row info containers
     ############################
     df2 = pd.read_csv(data_world)
     selected_region2 = df2[df2['location'].str.match(str(compare_with))]
-
     date2 = selected_region2["Date"].iloc[-1]
     cfr2 = selected_region2['CFR'].iloc[-1]
     cp100k2 = selected_region2['total_cases_per_100k'].iloc[-1].round(2)
@@ -531,7 +527,6 @@ def update_mini_containers1(regency, region, compare_with):
         '{}'.format(str(round(cp100k, 2))),
         '{}'.format(round(dp100k, 0)),
         '{}'.format(str(growth_rate) + '%'),
-
         '{}'.format(str(compare_with)),
         '{}'.format(str(round(cfr2, 2))),
         '{}'.format(str(round(cp100k2, 2))),
@@ -554,23 +549,28 @@ def make_count_figure(region, regency):
     # print(region)
     # print(regency)
     if region == 'indo':
-        df = pd.read_csv(data_covid_indo)
-        region_selected = 'indonesia'
+        df = pd.read_csv(data_world)   # use owid_world data
+        df = df[df['location'].str.match('Indonesia')]
+        region_select = 'Indonesia'
+
     elif region == 'bali' and regency == '' or regency == None:
+        region_selected = 'Bali'
         df = pd.read_csv(data_covid_indo)
-        region_selected = 'bali'
+        df = df[df['Province'].str.match(region_selected)]
+        
     else:
         df = pd.read_csv(data_covid_bali)
         region_selected = str(regency)
+        df = df[df['Name_EN'].str.match(region_selected)]
 
-    df = df[df['Name_EN'].str.match(region_selected)]
     df_test = df  # .tail(100)
     days = df_test.Date.to_list()
 
     # Bar Graph
     #####################
     fig = make_subplots(specs=[[{"secondary_y": True}]])
-    selected_cases = ['new_cases', 'new_recovered']
+
+    selected_cases = ['new_cases', 'new_deaths']
     colors = px.colors.sequential.Blues
     count = 0
     for selected in selected_cases:
@@ -588,7 +588,7 @@ def make_count_figure(region, regency):
     # Line Plot
     ###############
     count = 0
-    selected_new = ['total_deaths_per_100k', 'CFR', ]
+    selected_new = [ 'CFR', ] # 'total_deaths_per_100k',
     for selected in selected_new:
         count += 2
         fig.add_trace(
@@ -600,7 +600,6 @@ def make_count_figure(region, regency):
                 line=dict(color=colors[count], width=2),
             ),
             secondary_y=True
-
         )
 
     # Add Comparision Data
