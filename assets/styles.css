@@ -7,7 +7,13 @@ plotly color schemes "BLUES"
 ['rgb(247,251,255)', 'rgb(222,235,247)', 
 'rgb(198,219,239)', 'rgb(158,202,225)', 
 'rgb(107,174,214)', 'rgb(66,146,198)',
- 'rgb(33,113,181)', 'rgb(8,81,156)', 'rgb(8,48,107)'] */
+ 'rgb(33,113,181)', 'rgb(8,81,156)', 'rgb(8,48,107)']
+  */
+  /* colors = px.colors.sequential.Viridis
+  # ['#440154', '#482878', '#3e4989', '#31688e', '#26828e', 
+  # '#1f9e89', '#35b779', '#6ece58', '#b5de2b', '#fde725']
+  print(colors) */
+
 
 body {
   background-color:rgb(158,202,225);
