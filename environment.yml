@@ -46,6 +46,10 @@ dependencies:
   - yaml=0.2.5=he774522_0
   - zlib=1.2.11=h62dcd97_4
   - pip:
+  ## for Mongo DB integration
+    - pymongo==3.11.3
+    - dnspython==2.1.0
+    - python-dotenv==0.17.0
     - backcall==0.2.0
     - colorama==0.4.4
     - decorator==4.4.2

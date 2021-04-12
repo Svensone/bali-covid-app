@@ -4,3 +4,5 @@ KEYS
 
 # since to big for github (over 100mb)
 data/indo_level1_id.geojson
+
+.env

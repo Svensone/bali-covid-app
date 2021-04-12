@@ -8,19 +8,23 @@ import math
 import datetime as dt
 import pandas as pd
 import json
+import os 
 
+## Plotly
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-
 from dash.dependencies import Input, Output, State, ClientsideFunction
 import dash_core_components as dcc
 import dash_html_components as html
 
+## MongoDB Atlas Connect
+from dotenv import load_dotenv
+import pymongo # dont forget dnspython add to req.txt
+
 # Multi-dropdown options
 from controls import REGENCIES
 import controls
-
 
 # get relative data folder
 PATH = pathlib.Path(__file__).parent
@@ -29,7 +33,17 @@ DATA_PATH = PATH.joinpath("data").resolve()
 # ------------------------------------------------------------------------------
 # 1. Data
 # ------------------------------------------------------------------------------
+## FROM MONGODB ATLAS
 
+load_dotenv()
+client = pymongo.MongoClient(os.getenv('MONGODB_URI'))
+db = client.bali_covid
+collection = db.bali_regency_data
+
+data_bali1 = pd.DataFrame(list(db.bali_regency_data.find()))
+# print(data_bali1.head())
+
+## FROM CSV
 # bali regencies
 data_covid_bali = DATA_PATH.joinpath('bali_regency_data.csv')
 # indo provinces (change to kawalcovid)
@@ -43,6 +57,11 @@ geojson_bali = DATA_PATH.joinpath('new_bali_id.geojson')
 geojson_indo = DATA_PATH.joinpath('new_indo_id.geojson')
 geojson_germany = DATA_PATH.joinpath('geojson_ger.json')
 
+### Color Model
+################
+# Use sequential.Blues
+color1 = 'rgb(8,48,107)'
+color_comp = 'rgb(66,146,198)'
 
 # Initialize App
 # -----------------------------
@@ -77,12 +96,13 @@ layout = dict(
         zoom=7,
     ),
 )
+
+#######################
 # Create app layout
-# -----------------------------
+#######################
 app.layout = html.Div(
     [
         dcc.Store(id="aggregate_data"),
-
         # empty Div to trigger javascript file for graph resizing
         html.Div(id="output-clientside"),
 
@@ -183,6 +203,7 @@ app.layout = html.Div(
                             ],
                             multi=False,
                             value='Germany',
+                            clearable=False,
                             className='dcc_control info_text'
                         ),
                     ],
@@ -556,10 +577,18 @@ def make_count_figure(region, regency, compare_region):
     # Graph
     #####################
     fig = make_subplots(specs=[[{"secondary_y": True}]])
-    colors = px.colors.sequential.Viridis
-    # ['#440154', '#482878', '#3e4989', '#31688e', '#26828e', 
-    # '#1f9e89', '#35b779', '#6ece58', '#b5de2b', '#fde725']
-    # colors = ['#440154'] #, '#fde725', '#35b779',
+    
+    
+    # colors = px.colors.sequential.Blues
+    # print(colors)
+    # ['rgb(247,251,255)', 'rgb(222,235,247)', 
+    # 'rgb(198,219,239)', 'rgb(158,202,225)', 
+    # 'rgb(107,174,214)', 'rgb(66,146,198)', 
+    # 'rgb(33,113,181)', 
+    # 'rgb(8,81,156)', 'rgb(8,48,107)']
+    
+       ## Bar Plot
+       ###############
     selected_cases = ['new_cases_per_mil'] #add 'new_deaths' , 'new_recovered' ?
     for selected in selected_cases:
             name_bar = [region_selected, compare_region] #compare_region,
@@ -567,7 +596,7 @@ def make_count_figure(region, regency, compare_region):
                 go.Bar(
                     x=days,
                     y=df[selected],
-                    marker_color='blue',
+                    marker_color= color1,
                     name = (name_bar[0] +" "+ selected),
                 ),
                 secondary_y=False,
@@ -576,14 +605,15 @@ def make_count_figure(region, regency, compare_region):
                 go.Bar(
                     x=days,
                     y=df_compare['new_cases_per_million'],
-                    marker_color= 'orange',
+                    marker_color= color_comp,
                     name = (name_bar[1] +": cases per million"),
                 ),
                 secondary_y=False,
             ),
-    # Line Plot
-    ###############
-    selected_new = [ 'CFR', ] # 'total_deaths_per_100k',
+
+        ### Line Chart
+        ###############
+    selected_new = [ 'CFR', ] # growth_rate_new_cases
     for selected in selected_new:
         fig.add_trace(
             go.Scatter(
@@ -591,7 +621,7 @@ def make_count_figure(region, regency, compare_region):
                 y=df_test[selected],
                 # mode='lines',
                 name= selected,
-                line=dict(color='blue', width=2),
+                line=dict(color= color1, width=2),
             ),
             secondary_y=True
         )
@@ -601,45 +631,10 @@ def make_count_figure(region, regency, compare_region):
                 y=df_compare['CFR'],
                 # mode='lines',
                 name= selected,
-                line=dict(color='orange', width=2),
+                line=dict(color= color_comp, width=2),
             ),
             secondary_y=True
         )
-    # Add Comparision Data
-    #######################
-    # if compare_region:
-    #     colors = ['#440154'] #, '#fde725', '#35b779',
-    #     selected_cases = ['new_cases_per_mil'] #add 'new_deaths' , 'new_recovered' ?
-    #     for selected in selected_cases:
-    #             name_bar = [region_selected] #compare_region,
-    #             fig.add_trace(
-    #                 go.Bar(
-    #                     x=days,
-    #                     y=df[selected],
-    #                     marker_color=colors[0],
-    #                     name = (name_bar[0] +" "+ selected),
-    #                 ),
-    #                 secondary_y=False,
-    #             ),
-    #     # Line Plot Compare
-    #     ###############
-    #     colors_compare = ['#35b779',]       #, '#fde725', 
-
-    #     selected_new = [ 'CFR', ]           # 'total_deaths_per_100k',
-    #     for selected in selected_new:
-    #         fig.add_trace(
-    #             go.Scatter(
-    #                 x=days,
-    #                 y=df_compare[selected],
-    #                 # mode='lines',
-    #                 name= selected,
-    #                 line=dict(color=colors[0], width=2),
-    #             ),
-    #             secondary_y=True
-    #         )
-    # else:
-    #     return
-    # #     
 
     fig.update_layout(
         xaxis_tickfont_size=8,
@@ -654,13 +649,6 @@ def make_count_figure(region, regency, compare_region):
             y=1.02,
             xanchor="right",
             x=1
-
-            # yanchor="top",
-            # y=0.99,
-            # xanchor="center",
-            # x=0.01,
-            # bgcolor='rgba(0,0,0,0)',
-            # bordercolor='rgba(0,0,0,0)',
         ),
         barmode='group',
         bargap=0.15,  # gap between bars of adjacent location coordinates.
@@ -714,7 +702,11 @@ def make_main_figure(region, case_type, main_graph_layout, ):
     )
 
     fig.update_geos(fitbounds="locations", visible=False)
-    fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+    fig.update_layout(
+        margin={"r": 0, "t": 0, "l": 0, "b": 0},
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        )
     display_fig = go.Figure(fig)
 
     # relayoutData is None by default, and {'autosize': True} without relayout action
@@ -759,48 +751,37 @@ def make_regency_info_fig(region, case_type):
     regions = df_latest['Name_EN'].to_list()
 
     # Make Graph
-    colors = px.colors.sequential.Blues
     fig = go.Figure()
     fig.add_trace(
         go.Bar(
             x=regions,
             y=df_latest[c_type[0]],
             name=c_type[0],
-            marker_color=colors[4]
+            marker_color= color1
         ))
-    # Compare or Add different Metric
-    ###################################
-    # fig.add_trace(
-    #     go.Bar(
-    #         x=regions,
-    #         y=df_latest[c_type[1]],
-    #         name=c_type[1],
-    #         marker_color=colors[6]
-    #     ))
+    
     fig.update_layout(
         # title='{}'.format(df_latest['Date'].iloc(1)),
         xaxis_tickfont_size=6,
         yaxis=dict(
             tickfont_size=6,
         ),
-        plot_bgcolor=colors[0],
-        paper_bgcolor=colors[1],
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
         legend=dict(
             yanchor="top",
             y=0.99,
             xanchor="left",
             x=0.01,
-            bgcolor='white',
-            bordercolor='white',
+            bgcolor='rgba(0,0,0,0)',
+            bordercolor='rgba(0,0,0,0)',
         ),
         barmode='group',
         bargap=0.15,  # gap between bars of adjacent location coordinates.
         bargroupgap=0.1  # gap between bars of the same location coordinate.
     )
-
     # Set x-axis title
     # fig.update_yaxes(tickfont_size=6, secondary_y=True)
-
     return fig
 
 ##################################
@@ -824,7 +805,7 @@ def make_vacc_graph(compare_with):
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
-    colors = [px.colors.sequential.Blues[3], px.colors.sequential.Blues[8]]
+    colors = [color1, color_comp]
     names = ["Indonesia", compare_with]
 
     for index, data in enumerate(dfs):
@@ -833,18 +814,19 @@ def make_vacc_graph(compare_with):
             x=days,
             y=data['new_vaccinations_smoothed_per_million'],
             marker_color=colors[index],
-            name=str(names[index] + ': new vaccinations p.million')
+            name=str(names[index] + ': new vacc. p.million')
         ),
             secondary_y=False,)
         fig.add_trace(go.Scatter(
             x=days,
             y=data['people_fully_vaccinated_per_hundred'],
             marker_color=colors[index],
-            name=(names[index] + ': fully vaccinated p.million')
+            name=(names[index] + ': fully vacc. p.mil. in %')
         ),
             secondary_y=True)
 
     fig.update_layout(
+        title= 'Vaccinations',
         xaxis_tickfont_size=8,
         yaxis=dict(
             tickfont_size=8,
@@ -858,15 +840,6 @@ def make_vacc_graph(compare_with):
             xanchor="right",
             x=1
         ),
-        # legend=dict(
-
-        #     yanchor="top",
-        #     y=0.99,
-        #     xanchor="center",
-        #     x=0.01,
-        #     bgcolor='rgba(0,0,0,0)',
-        #     bordercolor='rgba(0,0,0,0)',
-        # ),
         barmode='group',
         bargap=0.15,  # gap between bars of adjacent location coordinates.
         bargroupgap=0.1  # gap between bars of the same location coordinate.
