@@ -50,6 +50,7 @@ dependencies:
     - pymongo==3.11.3
     - dnspython==2.1.0
     - python-dotenv==0.17.0
+  ## others
     - backcall==0.2.0
     - colorama==0.4.4
     - decorator==4.4.2

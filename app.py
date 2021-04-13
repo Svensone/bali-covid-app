@@ -38,11 +38,11 @@ DATA_PATH = PATH.joinpath("data").resolve()
 load_dotenv()
 ## env variables set on Heroku / for development use:
 # client = pymongo.MongoClient(os.getenv('MONGODB_URI'))
-client = pymongo.MongoClient(os.environ['MONGODB_URI'])
-db = client.bali_covid
-collection = db.bali_regency_data
+# client = pymongo.MongoClient(os.environ['MONGODB_URI'])
+# db = client.bali_covid
+# collection = db.bali_regency_data
 
-data_bali1 = pd.DataFrame(list(db.bali_regency_data.find()))
+# data_bali1 = pd.DataFrame(list(db.bali_regency_data.find()))
 # print(data_bali1.head())
 
 ## FROM CSV
@@ -138,19 +138,6 @@ app.layout = html.Div(
                     className="one-half column",
                     id="title",
                 ),
-                # html.Div(
-                #     [
-                #         html.Img(
-                #             src=app.get_asset_url("Barong-Mask.png"),
-                #             id="header-image",
-                #             style={
-                #                 "height": "90px",
-                #                 "width": "auto", },
-                #         ),
-                #     ],
-                #     className="one column",
-                #     id="header-image2",
-                # ),
             ],
             id="header",
             className="row flex-display",
