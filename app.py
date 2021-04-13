@@ -38,11 +38,11 @@ DATA_PATH = PATH.joinpath("data").resolve()
 load_dotenv()
 ## env variables set on Heroku / for development use:
 # client = pymongo.MongoClient(os.getenv('MONGODB_URI'))
-# client = pymongo.MongoClient(os.environ['MONGODB_URI'])
-# db = client.bali_covid
-# collection = db.bali_regency_data
+client = pymongo.MongoClient(os.environ['MONGODB_URI'])
+db = client.bali_covid
+collection = db.bali_regency_data
 
-# data_bali1 = pd.DataFrame(list(db.bali_regency_data.find()))
+data_bali1 = pd.DataFrame(list(db.bali_regency_data.find()))
 # print(data_bali1.head())
 
 ## FROM CSV
