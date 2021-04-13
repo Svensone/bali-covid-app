@@ -36,7 +36,9 @@ DATA_PATH = PATH.joinpath("data").resolve()
 ## FROM MONGODB ATLAS
 
 load_dotenv()
-client = pymongo.MongoClient(os.environ('MONGODB_URI'))
+## env variables set on Heroku / for development use:
+# client = pymongo.MongoClient(os.getenv('MONGODB_URI'))
+client = pymongo.MongoClient(os.environ['MONGODB_URI'])
 db = client.bali_covid
 collection = db.bali_regency_data
 
