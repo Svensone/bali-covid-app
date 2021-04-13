@@ -36,7 +36,7 @@ DATA_PATH = PATH.joinpath("data").resolve()
 ## FROM MONGODB ATLAS
 
 load_dotenv()
-client = pymongo.MongoClient(os.getenv('MONGODB_URI'))
+client = pymongo.MongoClient(os.environ('MONGODB_URI'))
 db = client.bali_covid
 collection = db.bali_regency_data
 
@@ -578,15 +578,6 @@ def make_count_figure(region, regency, compare_region):
     #####################
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     
-    
-    # colors = px.colors.sequential.Blues
-    # print(colors)
-    # ['rgb(247,251,255)', 'rgb(222,235,247)', 
-    # 'rgb(198,219,239)', 'rgb(158,202,225)', 
-    # 'rgb(107,174,214)', 'rgb(66,146,198)', 
-    # 'rgb(33,113,181)', 
-    # 'rgb(8,81,156)', 'rgb(8,48,107)']
-    
        ## Bar Plot
        ###############
     selected_cases = ['new_cases_per_mil'] #add 'new_deaths' , 'new_recovered' ?
@@ -597,7 +588,7 @@ def make_count_figure(region, regency, compare_region):
                     x=days,
                     y=df[selected],
                     marker_color= color1,
-                    name = (name_bar[0] +" "+ selected),
+                    name = (name_bar[0] +": "+ 'New cases per mil.'),
                 ),
                 secondary_y=False,
             ),
@@ -606,7 +597,7 @@ def make_count_figure(region, regency, compare_region):
                     x=days,
                     y=df_compare['new_cases_per_million'],
                     marker_color= color_comp,
-                    name = (name_bar[1] +": cases per million"),
+                    name = (name_bar[1] +": New cases per mil."),
                 ),
                 secondary_y=False,
             ),
@@ -628,7 +619,7 @@ def make_count_figure(region, regency, compare_region):
         fig.add_trace(
             go.Scatter(
                 x=days,
-                y=df_compare['CFR'],
+                y=df_compare[selected],
                 # mode='lines',
                 name= selected,
                 line=dict(color= color_comp, width=2),
