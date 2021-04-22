@@ -3,14 +3,16 @@ import pickle
 import copy
 import pathlib
 import urllib.request
-import dash
 import math
 import datetime as dt
 import pandas as pd
 import json
 import os
 
+pd.options.mode.chained_assignment = None  # default='warn'
+
 # Plotly
+import dash
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -34,18 +36,17 @@ DATA_PATH = PATH.joinpath("data").resolve()
 # 1. Data
 # ------------------------------------------------------------------------------
 # FROM MONGODB ATLAS
-
+###################
 load_dotenv()
 # env variables set on Heroku / for development use:
 # client = pymongo.MongoClient(os.getenv('MONGODB_URI'))
 client = pymongo.MongoClient(os.environ['MONGODB_URI'])
 db = client.bali_covid
 collection = db.bali_regency_data
-
 data_bali1 = pd.DataFrame(list(db.bali_regency_data.find()))
-# print(data_bali1.head())
 
 # FROM CSV
+###############
 # bali regencies
 data_covid_bali = DATA_PATH.joinpath('bali_regency_data.csv')
 # indo provinces (change to kawalcovid)
@@ -130,7 +131,7 @@ app.layout = html.Div(
                             [
                                 html.H2("Bali", style={
                                         "margin-bottom": "0px"},),
-                                html.H6("DailyCovid Numbers on District-Level",
+                                html.H6("Daily Covid19 Numbers on District-Level",
                                         style={"margin-top": "0px"}),
                             ]
                         )
@@ -143,7 +144,6 @@ app.layout = html.Div(
             className="row flex-display",
             style={"margin-bottom": "10px"},
         ),
-
         # #############################################
         # Row with Selector and 2-rows on right side
         # ##############################################
@@ -153,7 +153,7 @@ app.layout = html.Div(
                 # #######################
                 html.Div(
                     [
-                        html.P("Chooose a Region:", className='control_label'),
+                        html.H6("Chooose Region:", className='control_label'),
                         dcc.RadioItems(
                             id='region_selector',
                             options=[
@@ -166,7 +166,7 @@ app.layout = html.Div(
 
                         html.Div(
                             [
-                                html.P("Regency/County:",
+                                html.P("Regency in Bali:",
                                        className="control_label info_text"),
                                 dcc.Dropdown(
                                     id="regency_selector",
@@ -201,7 +201,6 @@ app.layout = html.Div(
                     ],
                     className="pretty_container two columns"
                 ),
-
                 # Right Side
                 # #######################
                 html.Div(
@@ -213,7 +212,7 @@ app.layout = html.Div(
                                 html.Div(
                                     [
                                         html.P(id="info_box_paragraph",
-                                               className='info_text'),
+                                            className='info_text'),
                                         html.H6(
                                             id="info_box",
                                             className='info_text'),
@@ -244,7 +243,7 @@ app.layout = html.Div(
                                         ),
                                         html.Div(
                                             [
-                                                html.P("cases per 100k", style={
+                                                html.P("Cases p. 100k", style={
                                                     'text-align': 'center'}),
                                                 html.H6(id="cases_per_100k", style={
                                                     'text-align': 'center'}),
@@ -256,7 +255,7 @@ app.layout = html.Div(
                                         ),
                                         html.Div(
                                             [
-                                                html.P("deaths per 100k", style={
+                                                html.P("Deaths p. 100k", style={
                                                     'text-align': 'center'}),
                                                 html.H6(id="deaths_per_100k", style={
                                                     'text-align': 'center'}),
@@ -268,8 +267,7 @@ app.layout = html.Div(
                                         ),
                                         html.Div(
                                             [
-                                                html.P(
-                                                    "Growth-Rate", style={'text-align': 'center'}),
+                                                html.P("Growth-Rate", style={'text-align': 'center'}),
                                                 html.H6(id="growth_rate", style={
                                                     'text-align': 'center'}),
                                                 html.H6(id="compare_growth_rate", style={
@@ -294,7 +292,7 @@ app.layout = html.Div(
                                 )
                             ],
                             id="countGraphContainer",
-                            style={"minHeight": "50vh"},
+                            style={"minHeight": "40vh"},
                             className="pretty_container"
                         )
                     ],
@@ -342,8 +340,9 @@ app.layout = html.Div(
                     )],
                     className="pretty_container eight columns",
                 ),
-                html.Div(
-                    [dcc.Graph(id="regency_info_graph")],
+                html.Div([
+                    dcc.Graph(id="regency_info_graph")
+                    ],
                     id="regency_info_div",
                     style={'max-width': '100%', 'max-height': '100%'},
                     className="pretty_container five columns",
@@ -371,14 +370,11 @@ app.layout = html.Div(
                                 'max-height': '100%',
                                 #    'background-size': 'cover',
                             }),
-                        html.P(
-                            id='fun-facts',
-                            style={
-                                "width": 'auto'
-                            }
+                        html.Table(
+                            id='fun_facts',
+                            style={"width": 'auto'}
                         )
                     ],
-
                     )
                 ],
                 className="pretty_container four columns",
@@ -409,9 +405,9 @@ app.layout = html.Div(
                             [
                                 html.H6("Sources", style={
                                         "margin-bottom": "0px"},),
-                                html.P(["Code:  https://github.com/Svensone/bali-covid-app"],
-                                       style={"margin-top": "5px", "margin-left": "20px"}),
                                 html.P([
+                                    "Code:  https://github.com/Svensone/bali-covid-app",
+                                    html.Br(),
                                     "Bali:      https://infocorona.baliprov.go.id/",
                                     html.Br(),
                                     "Indonesia: https://www.kaggle.com/hendratno/covid19-indonesia",
@@ -458,8 +454,6 @@ app.clientside_callback(
 #######################################
 # Region Selector -> show Regency Option
 #######################################
-
-
 @app.callback(
     Output(component_id='regency_selector_div', component_property='style'),
     Input('region_selector', 'value')
@@ -469,8 +463,6 @@ def show_regency_selector(region):
         return {'display': 'inline-block'}  # , 'flex-direction': 'row'
     if region == 'indo':
         return {'display': 'none'}
-
-
 #######################################
 # Selector -> Mini-Container Numbers
 ######################################
@@ -490,12 +482,11 @@ def show_regency_selector(region):
         Output('compare_growth_rate', 'children'),
     ],
     [Input('regency_selector', 'value'),
-     Input('region_selector', 'value'),
-     Input('compare_with', 'value'),
-     ],
+    Input('region_selector', 'value'),
+    Input('compare_with', 'value'),
+    ],
 )
 def update_mini_containers1(regency, region, compare_with):
-    print(regency + " infocontainer")
     # print(region)
     # first row info containers
     ############################
@@ -521,8 +512,7 @@ def update_mini_containers1(regency, region, compare_with):
     selected_region['growth_rate_new_cases'] = selected_region.loc[:, ['new_cases']].pct_change(
         fill_method='ffill', periods=7)
 
-    growth_rate = selected_region.loc[:,
-                                      ('growth_rate_new_cases')].iloc[-1].round()
+    growth_rate = selected_region.loc[:, ('growth_rate_new_cases')].iloc[-1].round()
 
     # second row info containers
     ############################
@@ -552,8 +542,6 @@ def update_mini_containers1(regency, region, compare_with):
 ##################################
 # Selectors -> time series graph (1.st Graph)
 ###################################
-
-
 @app.callback(
     Output("count_graph", "figure"),
     [
@@ -562,7 +550,6 @@ def update_mini_containers1(regency, region, compare_with):
         Input('compare_with', 'value'),
     ])
 def make_count_figure(region, regency, compare_region):
-    print(region, regency, compare_region)
     if region == 'indo':
         df = pd.read_csv(data_world)   # use owid_world data
         df = df[df['location'].str.match('Indonesia')]
@@ -576,21 +563,19 @@ def make_count_figure(region, regency, compare_region):
         region_selected = str(regency)
         df = df[df['Name_EN'].str.match(region_selected)]
 
-    df_test = df  # .tail(100)
-    days = df_test.Date.to_list()
+    days = df.Date.to_list()
     df_compare = pd.read_csv(data_world)
     df_compare = df_compare[df_compare['location'].str.match(compare_region)]
 
     # Graph
     #####################
     fig = make_subplots(specs=[[{"secondary_y": True}]])
-
     # Bar Plot
     ###############
     # add 'new_deaths' , 'new_recovered' ?
     selected_cases = ['new_cases_per_mil']
     for selected in selected_cases:
-        name_bar = [region_selected, compare_region]  # compare_region,
+        name_bar = [region_selected, compare_region]
         fig.add_trace(
             go.Bar(
                 x=days,
@@ -609,7 +594,6 @@ def make_count_figure(region, regency, compare_region):
             ),
             secondary_y=False,
         ),
-
         # Line Chart
         ###############
     selected_new = ['CFR', ]  # growth_rate_new_cases
@@ -617,7 +601,7 @@ def make_count_figure(region, regency, compare_region):
         fig.add_trace(
             go.Scatter(
                 x=days,
-                y=df_test[selected],
+                y=df[selected],
                 # mode='lines',
                 name=selected,
                 line=dict(color=color1, width=2),
@@ -660,8 +644,6 @@ def make_count_figure(region, regency, compare_region):
 ##################################
 # Selectors -> choropleth graph
 ###################################
-
-
 @app.callback(
     Output("main_graph", "figure"),
     [Input('region_selector', 'value'),
@@ -689,9 +671,9 @@ def make_main_figure(region, case_type, main_graph_layout, ):
         center = {"lat": 48.5002, "lon": 9.0129}
         zoom = 7
 
-    if case_type == 'Confirmed':
+    if case_type == 'total_cases_per_100k':
         color_code = 'aggrnyl'
-    elif case_type == 'Recovered':
+    elif case_type == 'total_recovered':
         color_code = 'blues'
     else:
         color_code = 'sunsetdark'
@@ -733,7 +715,6 @@ def make_main_figure(region, case_type, main_graph_layout, ):
     # figure = dict(data=traces, layout=layout)
     return display_fig
 
-
 #########################
 # Selectors  -> regency_info_bar Charts
 #########################
@@ -756,7 +737,6 @@ def make_regency_info_fig(region, case_type):
         c_type = ['new_deaths']
     else:
         c_type = ['new_recovered']
-    # get latest date
     # display per regency, new daily cases (Bar) and cases7 (Line)
     df_latest = df.sort_values(by=['Date'], ascending=False).head(10)
     regions = df_latest['Name_EN'].to_list()
@@ -798,15 +778,11 @@ def make_regency_info_fig(region, case_type):
 ##################################
 # Selectors -> Vaccination graph
 ###################################
-
-
 @app.callback(
     Output("vacc_graph", "figure"),
     Input('compare_with', 'value')
 )
 def make_vacc_graph(compare_with):
-    print(compare_with)
-
     df = pd.read_csv(data_world)
     df_compare = df[df['location'].str.match(str(compare_with))].iloc[-100:]
     df_indo = df[df['location'].str.match(str("Indonesia"))].iloc[-100:]
@@ -862,36 +838,38 @@ def make_vacc_graph(compare_with):
     fig.update_yaxes(tickfont_size=8, secondary_y=True)
 
     return fig
+
 ##################################
 # Selectors -> Fun Facts
 ###################################
-
-
 @app.callback(
-    Output("fun-facts", "children"),
+    Output("fun_facts", "children"),
     [Input('compare_with', 'value'), ]
 )
 def fun_facts(compare_with):
-    data_world1 = pd.read_csv(data_world)
-    data_world1 = data_world1[['location', 'median_age', 'aged_65_older', 'male_smokers', 'female_smokers', 'diabetes_prevalence', 'new_tests_per_thousand', 'positive_rate']]
-    
-    indo_fun = data_world1[data_world1['location'].str.match('Indonesia')].loc[-1:]
-    # print(indo_fun)
-    compare_fun = data_world1[data_world1['location'].str.match(compare_with)].loc[:-1]
-    # print(compare_fun)
-    print(indo_fun.median_age.loc[-1:])
-    text1 = (
-        f'Indonesia median age {indo_fun.median_age.loc[-1:,1:]};'
-        )
-        # age 65 or older {indo_fun.aged_65_older.astype(str)};\
-        # new tests per thousand: {indo_fun.new_tests_per_thousand}; \
-        #     test positive rate: {indo_fun.positive_rate};\
-        #          diabetes prevelance: {indo_fun.diabetes_prevalence}; \
-        #              male smokers: {indo_fun.male_smokers}; 
-        # female smokers: {indo_fun.female_smokers}.')
-    text2 = (f'{compare_with}: median age : {compare_fun.median_age}; age 65 or older: {compare_fun.aged_65_older}; new_tests_per_thousand: {compare_fun.new_tests_per_thousand}; test positive rate: {compare_fun.positive_rate}; diabetes prevelance: {compare_fun.diabetes_prevalence}, male smokers: {compare_fun.male_smokers};') # female smokers: {compare_fun.female_smokers}.')
-    return text1
+    print(compare_with)
 
+    data_world1 = pd.read_csv(data_world)
+    data_world1 = data_world1[['Date', 'location', 'median_age', 'aged_65_older', 'male_smokers', 'female_smokers', 'diabetes_prevalence']]
+    indo_fun = data_world1[data_world1['location'].str.match('Indonesia')].iloc[-1:]
+    compare_fun = data_world1[data_world1['location'].str.match(compare_with)].iloc[-1:]
+
+    indoT = indo_fun.T
+    compareT = compare_fun.T
+    table_df = indoT.merge(compareT, left_index=True, right_index=True)
+    table_df.columns = ['Indonesia', compare_with]
+    table_df.reset_index(inplace=True)
+
+    # print(table_df)
+    print(table_df.iloc[3])
+
+    table = []
+    for index, row in table_df.iterrows():
+        html_row = []
+        for i in range(len(row)):
+            html_row.append(html.Td([row[i]]))
+        table.append(html.Tr(html_row))
+    return table
 
 # Main
 if __name__ == "__main__":
