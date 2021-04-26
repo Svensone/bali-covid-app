@@ -581,64 +581,63 @@ def make_count_figure(region, regency, compare_region):
     #####################
     # specs=[[{'type':'domain', "secondary_y": True}, {'type':'domain', 'secondary_y': True}],]
     fig = make_subplots(
-        rows=2, cols=1,
-        shared_xaxes=True,
-        vertical_spacing=0.1,
-        subplot_titles=("Daily New Cases p. mil", "CFR"),
+        # rows=2, cols=1,
+        # shared_xaxes=True,
+        # vertical_spacing=0.1,
+        # subplot_titles=("Daily New Cases p. mil"),
     )
-    # fig.print_grid()
     # Bar Plot
     ###############
     # add 'new_deaths' , 'new_recovered' ?
     selected_cases = ['new_cases_per_mil']
     for selected in selected_cases:
         name_bar = [region_selected, compare_region]
-        fig.append_trace(
+        fig.add_trace(
             go.Bar(
                 x=days,
                 y=df[selected],
                 marker_color=color1,
                 name=(name_bar[0]),
             ),
-            row=1, col=1,
+            # row=1, col=1,
             # secondary_y=False,
         ),
-        fig.append_trace(
+        fig.add_trace(
             go.Bar(
                 x=days,
                 y=df_compare['new_cases_per_million'],
                 marker_color=color_comp,
                 name=(name_bar[1]),
             ),
-            row=1, col=1,
+            # row=1, col=1,
             # secondary_y=False,
         ),
         # Line Chart
         ###############
-    selected_new = ['CFR', ]  # growth_rate_new_cases
-    for selected in selected_new:
-        fig.append_trace(
-            go.Scatter(
-                x=days,
-                y=df[selected],
-                # mode='lines',
-                name=selected,
-                line=dict(color=color1, width=2),
-            ),
-            row=2, col=1,
-            # secondary_y=True,
-        )
-        fig.append_trace(
-            go.Scatter(
-                x=days,
-                y=df_compare[selected],
-                # mode='lines',
-                name=selected,
-                line=dict(color=color_comp, width=2),
-            ),
-            row=2, col=1,
-            # secondary_y=False
-        )
+    # selected_new = ['CFR', ]  # growth_rate_new_cases
+    # for selected in selected_new:
+    #     fig.append_trace(
+    #         go.Scatter(
+    #             x=days,
+    #             y=df[selected],
+    #             # mode='lines',
+    #             name=selected,
+    #             line=dict(color=color1, width=2),
+    #         ),
+    #         row=2, col=1,
+    #         # secondary_y=True,
+    #     )
+    #     fig.append_trace(
+    #         go.Scatter(
+    #             x=days,
+    #             y=df_compare[selected],
+    #             # mode='lines',
+    #             name=selected,
+    #             line=dict(color=color_comp, width=2),
+    #         ),
+    #         row=2, col=1,
+    #         # secondary_y=False
+    #     )
     fig.update_layout(
         # title = "New Cases per million",
         xaxis=dict(
@@ -647,9 +646,9 @@ def make_count_figure(region, regency, compare_region):
             rangeselector=dict(
                 buttons=list([
                     dict(count=1,
-                         label="1m",
-                         step="month",
-                         stepmode="backward"),
+                        label="1m",
+                        step="month",
+                        stepmode="backward"),
                     dict(
                         count=6,
                         label="6m",
@@ -657,17 +656,17 @@ def make_count_figure(region, regency, compare_region):
                         stepmode="backward",
                     ),
                     dict(count=1,
-                         label="YTD",
-                         step="year",
-                         stepmode="todate"),
+                        label="YTD",
+                        step="year",
+                        stepmode="todate"),
                     dict(count=1,
-                         label="1y",
-                         step="year",
-                         stepmode="todate"),
+                        label="1y",
+                        step="year",
+                        stepmode="todate"),
                     dict(count=2,
-                         label="2y",
-                         step="year",
-                         stepmode="backward"),
+                        label="2y",
+                        step="year",
+                        stepmode="backward"),
                     dict(
                         step="all",
                         label='all',
@@ -675,7 +674,8 @@ def make_count_figure(region, regency, compare_region):
                     )
                 ])
             ),
-            type="date"
+            type="date",
+            rangeslider_visible=True,
         ),
         # dtick="M1",
         # tickformat="%b\n%Y",
@@ -689,7 +689,7 @@ def make_count_figure(region, regency, compare_region):
         plot_bgcolor='rgba(0,0,0,0)',
         legend=dict(
             orientation="h",
-            yanchor="top",
+            yanchor="bottom",
             xanchor="left",
         ),
         barmode='group',
@@ -707,10 +707,10 @@ def make_count_figure(region, regency, compare_region):
     # rangeslider for both subplots
     fig.update_xaxes(matches='x')
 # https://community.plotly.com/t/subplot-with-shared-x-axis-and-range-slider/3148/2
-    fig.update_layout(
-        xaxis2_rangeslider_visible=True,
-        xaxis2_rangeslider_thickness=0.1
-    )
+    # fig.update_layout(
+    #     xaxis2_rangeslider_visible=True,
+    #     xaxis2_rangeslider_thickness=0.1
+    # )
 
     return fig
 
@@ -926,7 +926,7 @@ def fun_facts(compare_with):
     table_df = indoT.merge(compareT, left_index=True, right_index=True)
     table_df.columns = ['Indonesia', compare_with]
     table_df.reset_index(inplace=True)
-    print(table_df)
+    # print(table_df)
 
     # print(table_df.iloc[3])
     table = []
