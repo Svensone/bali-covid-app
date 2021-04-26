@@ -1,4 +1,16 @@
 # Import required libraries
+import controls
+from controls import REGENCIES
+import pymongo  # dont forget dnspython add to req.txt
+from dotenv import load_dotenv
+import dash_html_components as html
+import dash_core_components as dcc
+from dash.dependencies import Input, Output, State, ClientsideFunction
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+import plotly.express as px
+
+import dash
 import pickle
 import copy
 import pathlib
@@ -10,23 +22,11 @@ import json
 import os
 
 pd.options.mode.chained_assignment = None  # default='warn'
-
 # Plotly
-import dash
-import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-from dash.dependencies import Input, Output, State, ClientsideFunction
-import dash_core_components as dcc
-import dash_html_components as html
 
 # MongoDB Atlas Connect
-from dotenv import load_dotenv
-import pymongo  # dont forget dnspython add to req.txt
 
 # Multi-dropdown options
-from controls import REGENCIES
-import controls
 
 # get relative data folder
 PATH = pathlib.Path(__file__).parent
@@ -52,7 +52,7 @@ data_covid_bali = DATA_PATH.joinpath('bali_regency_data.csv')
 # indo provinces (change to kawalcovid)
 data_covid_indo = DATA_PATH.joinpath('indo_province_data.csv')
 # delete bw Data
-data_covid_germany = DATA_PATH.joinpath('county_covid_BW.csv')
+# data_covid_germany = DATA_PATH.joinpath('county_covid_BW.csv')
 # data comparison and indo !
 data_world = DATA_PATH.joinpath('world_data.csv')
 
@@ -63,6 +63,7 @@ geojson_germany = DATA_PATH.joinpath('geojson_ger.json')
 # Color Model
 ################
 # Use sequential.Blues
+# additional colors for higher contrast
 color1 = 'rgb(8,48,107)'
 color_comp = 'rgb(66,146,198)'
 
@@ -212,7 +213,7 @@ app.layout = html.Div(
                                 html.Div(
                                     [
                                         html.P(id="info_box_paragraph",
-                                            className='info_text'),
+                                               className='info_text'),
                                         html.H6(
                                             id="info_box",
                                             className='info_text'),
@@ -267,7 +268,8 @@ app.layout = html.Div(
                                         ),
                                         html.Div(
                                             [
-                                                html.P("Growth-Rate", style={'text-align': 'center'}),
+                                                html.P(
+                                                    "Growth-Rate", style={'text-align': 'center'}),
                                                 html.H6(id="growth_rate", style={
                                                     'text-align': 'center'}),
                                                 html.H6(id="compare_growth_rate", style={
@@ -289,10 +291,12 @@ app.layout = html.Div(
                             [
                                 dcc.Graph(
                                     id='count_graph',
+                                    # initial_range = ['2020.12.01', '2021.04.24'],
+                                    # fig['layout']['xaxis'].update(range = initial_range),
                                 )
                             ],
                             id="countGraphContainer",
-                            style={"minHeight": "40vh"},
+                            style={"minHeight": "60vh"},
                             className="pretty_container"
                         )
                     ],
@@ -342,7 +346,7 @@ app.layout = html.Div(
                 ),
                 html.Div([
                     dcc.Graph(id="regency_info_graph")
-                    ],
+                ],
                     id="regency_info_div",
                     style={'max-width': '100%', 'max-height': '100%'},
                     className="pretty_container five columns",
@@ -363,13 +367,13 @@ app.layout = html.Div(
             html.Div(
                 [
                     html.Div([
-                        html.Img(
-                            src=app.get_asset_url('pic1.jpg'),
-                            style={
-                                'max-width': '100%',
-                                'max-height': '100%',
-                                #    'background-size': 'cover',
-                            }),
+                        # html.Img(
+                        #     src=app.get_asset_url('pic1.jpg'),
+                        #     style={
+                        #         'max-width': '100%',
+                        #         'max-height': '100%',
+                        #         #    'background-size': 'cover',
+                        #     }),
                         html.Table(
                             id='fun_facts',
                             style={"width": 'auto'}
@@ -454,6 +458,8 @@ app.clientside_callback(
 #######################################
 # Region Selector -> show Regency Option
 #######################################
+
+
 @app.callback(
     Output(component_id='regency_selector_div', component_property='style'),
     Input('region_selector', 'value')
@@ -466,6 +472,8 @@ def show_regency_selector(region):
 #######################################
 # Selector -> Mini-Container Numbers
 ######################################
+
+
 @app.callback(
     [
         Output("info_box_paragraph", "children"),
@@ -482,9 +490,9 @@ def show_regency_selector(region):
         Output('compare_growth_rate', 'children'),
     ],
     [Input('regency_selector', 'value'),
-    Input('region_selector', 'value'),
-    Input('compare_with', 'value'),
-    ],
+     Input('region_selector', 'value'),
+     Input('compare_with', 'value'),
+     ],
 )
 def update_mini_containers1(regency, region, compare_with):
     # print(region)
@@ -512,7 +520,8 @@ def update_mini_containers1(regency, region, compare_with):
     selected_region['growth_rate_new_cases'] = selected_region.loc[:, ['new_cases']].pct_change(
         fill_method='ffill', periods=7)
 
-    growth_rate = selected_region.loc[:, ('growth_rate_new_cases')].iloc[-1].round()
+    growth_rate = selected_region.loc[:,
+                                      ('growth_rate_new_cases')].iloc[-1].round()
 
     # second row info containers
     ############################
@@ -542,6 +551,8 @@ def update_mini_containers1(regency, region, compare_with):
 ##################################
 # Selectors -> time series graph (1.st Graph)
 ###################################
+
+
 @app.callback(
     Output("count_graph", "figure"),
     [
@@ -562,43 +573,51 @@ def make_count_figure(region, regency, compare_region):
         df = pd.read_csv(data_covid_bali)
         region_selected = str(regency)
         df = df[df['Name_EN'].str.match(region_selected)]
-
     days = df.Date.to_list()
     df_compare = pd.read_csv(data_world)
     df_compare = df_compare[df_compare['location'].str.match(compare_region)]
 
     # Graph
     #####################
-    fig = make_subplots(specs=[[{"secondary_y": True}]])
+    # specs=[[{'type':'domain', "secondary_y": True}, {'type':'domain', 'secondary_y': True}],]
+    fig = make_subplots(
+        rows=2, cols=1,
+        shared_xaxes=True,
+        vertical_spacing=0.1,
+        subplot_titles=("Daily New Cases p. mil", "CFR"),
+    )
+    # fig.print_grid()
     # Bar Plot
     ###############
     # add 'new_deaths' , 'new_recovered' ?
     selected_cases = ['new_cases_per_mil']
     for selected in selected_cases:
         name_bar = [region_selected, compare_region]
-        fig.add_trace(
+        fig.append_trace(
             go.Bar(
                 x=days,
                 y=df[selected],
                 marker_color=color1,
-                name=(name_bar[0] + ": " + 'New cases per mil.'),
+                name=(name_bar[0]),
             ),
-            secondary_y=False,
+            row=1, col=1,
+            # secondary_y=False,
         ),
-        fig.add_trace(
+        fig.append_trace(
             go.Bar(
                 x=days,
                 y=df_compare['new_cases_per_million'],
                 marker_color=color_comp,
-                name=(name_bar[1] + ": New cases per mil."),
+                name=(name_bar[1]),
             ),
-            secondary_y=False,
+            row=1, col=1,
+            # secondary_y=False,
         ),
         # Line Chart
         ###############
     selected_new = ['CFR', ]  # growth_rate_new_cases
     for selected in selected_new:
-        fig.add_trace(
+        fig.append_trace(
             go.Scatter(
                 x=days,
                 y=df[selected],
@@ -606,9 +625,10 @@ def make_count_figure(region, regency, compare_region):
                 name=selected,
                 line=dict(color=color1, width=2),
             ),
-            secondary_y=True
+            row=2, col=1,
+            # secondary_y=True,
         )
-        fig.add_trace(
+        fig.append_trace(
             go.Scatter(
                 x=days,
                 y=df_compare[selected],
@@ -616,49 +636,104 @@ def make_count_figure(region, regency, compare_region):
                 name=selected,
                 line=dict(color=color_comp, width=2),
             ),
-            secondary_y=True
+            row=2, col=1,
+            # secondary_y=False
         )
-
     fig.update_layout(
+        # title = "New Cases per million",
+        xaxis=dict(
+            # autorange= False,
+            # range= [‘2021-04-25’, ‘2021-04-26’],
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=1,
+                         label="1m",
+                         step="month",
+                         stepmode="backward"),
+                    dict(
+                        count=6,
+                        label="6m",
+                        step="month",
+                        stepmode="backward",
+                    ),
+                    dict(count=1,
+                         label="YTD",
+                         step="year",
+                         stepmode="todate"),
+                    dict(count=1,
+                         label="1y",
+                         step="year",
+                         stepmode="todate"),
+                    dict(count=2,
+                         label="2y",
+                         step="year",
+                         stepmode="backward"),
+                    dict(
+                        step="all",
+                        label='all',
+                        stepmode='backward',
+                    )
+                ])
+            ),
+            type="date"
+        ),
+        # dtick="M1",
+        # tickformat="%b\n%Y",
+        # ticklabelmode="period",
         xaxis_tickfont_size=8,
         yaxis=dict(
             tickfont_size=8,
+            autorange=True,
         ),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         legend=dict(
             orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
+            yanchor="top",
+            xanchor="left",
         ),
         barmode='group',
         bargap=0.15,  # gap between bars of adjacent location coordinates.
         bargroupgap=0.1  # gap between bars of the same location coordinate.
     )
     # Set x-axis title
-    fig.update_yaxes(tickfont_size=8, secondary_y=True)
+    fig.update_yaxes(
+        tickfont_size=8,
+        # secondary_y=True,
+    )
+    # custom initial range:
+    fig.update_layout(xaxis_range=[dt.datetime(2020, 12, 1),
+                                dt.datetime(2021, 4, 24)])
+    # rangeslider for both subplots
+    fig.update_xaxes(matches='x')
+# https://community.plotly.com/t/subplot-with-shared-x-axis-and-range-slider/3148/2
+    fig.update_layout(
+        xaxis2_rangeslider_visible=True,
+        xaxis2_rangeslider_thickness=0.1
+    )
+
     return fig
 
 ##################################
 # Selectors -> choropleth graph
 ###################################
-@app.callback(
+@ app.callback(
     Output("main_graph", "figure"),
     [Input('region_selector', 'value'),
      Input('case_type_selector', 'value')],
     [State("main_graph", "relayoutData")],
 )
 def make_main_figure(region, case_type, main_graph_layout, ):
-    PATH = pathlib.Path(__file__).parent
+    ###################################
+    # To-dos: add log10 for values for higher contrast
+    ###################################
+    PATH = pathlib.Path(__file__).parent  # no need?
     if region == 'bali':
         df = pd.read_csv(data_covid_bali)
         geojson = json.load(open(geojson_bali))
         center = {"lat": -8.5002, "lon": 115.0129}
         zoom = 7
         # color_code = 'blues'
-
     elif region == 'indo':
         df = pd.read_csv(data_covid_indo)
         geojson = json.load(open(geojson_indo))
@@ -670,14 +745,12 @@ def make_main_figure(region, case_type, main_graph_layout, ):
         geojson = json.load(open(geojson_germany))
         center = {"lat": 48.5002, "lon": 9.0129}
         zoom = 7
-
     if case_type == 'total_cases_per_100k':
         color_code = 'aggrnyl'
     elif case_type == 'total_recovered':
         color_code = 'blues'
     else:
         color_code = 'sunsetdark'
-
     fig = px.choropleth_mapbox(
         df,
         geojson=geojson,
@@ -688,12 +761,11 @@ def make_main_figure(region, case_type, main_graph_layout, ):
         hover_data=['CFR', "new_cases", "new_deaths",
                     "growth_rate_new_cases", "Date"],
         # animation_frame="Date",
-        color_continuous_scale= color_code,
+        color_continuous_scale=color_code,
         zoom=zoom,
         center=center,
         opacity=0.5,
     )
-
     fig.update_geos(fitbounds="locations", visible=False)
     fig.update_layout(
         margin={"r": 0, "t": 0, "l": 0, "b": 0},
@@ -701,7 +773,6 @@ def make_main_figure(region, case_type, main_graph_layout, ):
         plot_bgcolor='rgba(0,0,0,0)',
     )
     display_fig = go.Figure(fig)
-
     # relayoutData is None by default, and {'autosize': True} without relayout action
     if main_graph_layout is not None:
         if "mapbox.center" in main_graph_layout.keys():
@@ -711,7 +782,6 @@ def make_main_figure(region, case_type, main_graph_layout, ):
             layout["mapbox"]["center"]["lon"] = lon
             layout["mapbox"]["center"]["lat"] = lat
             layout["mapbox"]["zoom"] = zoom
-
     # figure = dict(data=traces, layout=layout)
     return display_fig
 
@@ -720,9 +790,8 @@ def make_main_figure(region, case_type, main_graph_layout, ):
 #########################
 @app.callback(
     Output('regency_info_graph', 'figure'),
-    [
-        Input('region_selector', 'value'),
-        Input('case_type_selector', 'value'), ]
+    [Input('region_selector', 'value'),
+     Input('case_type_selector', 'value'), ]
 )
 def make_regency_info_fig(region, case_type):
     if region == 'indo':
@@ -740,7 +809,6 @@ def make_regency_info_fig(region, case_type):
     # display per regency, new daily cases (Bar) and cases7 (Line)
     df_latest = df.sort_values(by=['Date'], ascending=False).head(10)
     regions = df_latest['Name_EN'].to_list()
-
     # Make Graph
     fig = go.Figure()
     fig.add_trace(
@@ -750,7 +818,6 @@ def make_regency_info_fig(region, case_type):
             name=c_type[0],
             marker_color=color1
         ))
-
     fig.update_layout(
         # title='{}'.format(df_latest['Date'].iloc(1)),
         xaxis_tickfont_size=6,
@@ -793,10 +860,8 @@ def make_vacc_graph(compare_with):
         dfs = [df_indo, df_compare]
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
-
     colors = [color1, color_comp]
     names = ["Indonesia", compare_with]
-
     for index, data in enumerate(dfs):
         days = df_indo.Date.to_list()
         fig.add_trace(go.Bar(
@@ -813,7 +878,6 @@ def make_vacc_graph(compare_with):
             name=(names[index] + ': fully vacc. p.mil. in %')
         ),
             secondary_y=True)
-
     fig.update_layout(
         title='Vaccinations',
         xaxis_tickfont_size=8,
@@ -833,10 +897,8 @@ def make_vacc_graph(compare_with):
         bargap=0.15,  # gap between bars of adjacent location coordinates.
         bargroupgap=0.1  # gap between bars of the same location coordinate.
     )
-
     # Set x-axis title
     fig.update_yaxes(tickfont_size=8, secondary_y=True)
-
     return fig
 
 ##################################
@@ -847,22 +909,26 @@ def make_vacc_graph(compare_with):
     [Input('compare_with', 'value'), ]
 )
 def fun_facts(compare_with):
-    print(compare_with)
-
+    # print(compare_with)
+    ###############################
+    # Add 'handwashing_facilities', 'hospital_beds_per_thousand',
+    #  'life_expectancy', 'human_development_index', 'stringency_index', 'gdp_per_capita', 'extreme_poverty', 'cardiovasc_death_rate',
     data_world1 = pd.read_csv(data_world)
-    data_world1 = data_world1[['Date', 'location', 'median_age', 'aged_65_older', 'male_smokers', 'female_smokers', 'diabetes_prevalence']]
-    indo_fun = data_world1[data_world1['location'].str.match('Indonesia')].iloc[-1:]
-    compare_fun = data_world1[data_world1['location'].str.match(compare_with)].iloc[-1:]
+    data_world1 = data_world1[['Date', 'location', 'median_age',
+                            'aged_65_older', 'male_smokers', 'female_smokers', 'diabetes_prevalence']]
+    indo_fun = data_world1[data_world1['location'].str.match(
+        'Indonesia')].iloc[-1:]
+    compare_fun = data_world1[data_world1['location'].str.match(
+        compare_with)].iloc[-1:]
 
     indoT = indo_fun.T
     compareT = compare_fun.T
     table_df = indoT.merge(compareT, left_index=True, right_index=True)
     table_df.columns = ['Indonesia', compare_with]
     table_df.reset_index(inplace=True)
+    print(table_df)
 
-    # print(table_df)
-    print(table_df.iloc[3])
-
+    # print(table_df.iloc[3])
     table = []
     for index, row in table_df.iterrows():
         html_row = []
@@ -870,6 +936,7 @@ def fun_facts(compare_with):
             html_row.append(html.Td([row[i]]))
         table.append(html.Tr(html_row))
     return table
+
 
 # Main
 if __name__ == "__main__":
