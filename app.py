@@ -164,11 +164,10 @@ app.layout = html.Div(
                             labelStyle={"display": "inline-block"},
                             value="bali",
                             className="dcc_control",),
-
                         html.Div(
                             [
                                 html.P("Regency in Bali:",
-                                       className="control_label info_text"),
+                                    className="control_label info_text"),
                                 dcc.Dropdown(
                                     id="regency_selector",
                                     options=regency_options,
@@ -180,9 +179,8 @@ app.layout = html.Div(
                             id="regency_selector_div",
                             # className= "dcc_control" ,
                         ),
-
                         html.P("Compare data with:",
-                               className='control_label'),
+                            className='control_label'),
                         dcc.Dropdown(
                             id='compare_with',
                             options=[
@@ -306,7 +304,6 @@ app.layout = html.Div(
             ],
             className="row"
         ),
-
         # Control Bar 2
         # --------------------
         html.Div([
@@ -374,6 +371,7 @@ app.layout = html.Div(
                         #         'max-height': '100%',
                         #         #    'background-size': 'cover',
                         #     }),
+                        html.H6("Fun Facts:", className='control_label'),
                         html.Table(
                             id='fun_facts',
                             style={"width": 'auto'}
@@ -920,6 +918,10 @@ def fun_facts(compare_with):
         'Indonesia')].iloc[-1:]
     compare_fun = data_world1[data_world1['location'].str.match(
         compare_with)].iloc[-1:]
+    # print(compare_fun.head())
+    indo_fun = indo_fun.round(1)
+    compare_fun = compare_fun.round(1)
+    # print(compare_fun.head())
 
     indoT = indo_fun.T
     compareT = compare_fun.T
