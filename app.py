@@ -20,11 +20,16 @@ import datetime as dt
 import pandas as pd
 import json
 import os
-
 pd.options.mode.chained_assignment = None  # default='warn'
-# Plotly
+
+########### to-dos  ###############
+# compare w. https://public.tableau.com/profile/taufiqhs#!/vizhome/Covid-19IndonesiaByProvince/DashboardUtama
+# check learnings from Data Viz w tableau Coursera
+# check vaccination and new cases per mil data
+# vert. bar graph regency -> horizontal readability of font
 
 # MongoDB Atlas Connect
+
 
 # Multi-dropdown options
 
